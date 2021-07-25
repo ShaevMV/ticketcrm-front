@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  node:
+    build:
+      context: docker/node
+    working_dir: /var/app
+    ports:
+      - 8081:8080
+    volumes:
+      - .:/var/app
+    user: node
+    command: tail -f /dev/null
+
