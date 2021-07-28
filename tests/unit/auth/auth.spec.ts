@@ -1,4 +1,9 @@
+import "reflect-metadata";
 import {AuthorizationValue, IAuthorizationForm} from "@/modules/auth/values/AuthorizationValue";
+import {myContainer} from "@/domen/inject/inversify.config";
+import {TYPES} from "@/domen/inject/types";
+import {AuthorizationAction} from "@/modules/auth/actions/AuthorizationAction";
+
 
 describe('Auth', () => {
   it('Создание value правильного', () => {
@@ -14,7 +19,7 @@ describe('Auth', () => {
     expect(value.email).toEqual("test@test.com");
     expect(value.password).toEqual("password");
   });
-  it('Создание value fail', () => {
+  /*it('Создание value fail', () => {
     let IValue : IAuthorizationForm = {
       email: "test@testcom",
       password: "password"
@@ -25,6 +30,18 @@ describe('Auth', () => {
     expect(authorizationValue.isFailure).toEqual(true);
     expect(authorizationValue.isSuccess).toEqual(false);
   });
+*/
+  it('Проверка action AuthorizationAction', () => {
+    let IValue : IAuthorizationForm = {
+      email: "test@test.com",
+      password: "password"
+    }
 
+    let action = myContainer.get<AuthorizationAction>(TYPES.AuthorizationAction);
+    let token = action.getToken(AuthorizationValue.create(IValue).getResult())
 
+    expect(token.accessToken).not.toBeNull();
+    expect(token.expiresIn).not.toBeNull();
+    expect(token.tokenType).not.toBeNull();
+  });
 })
