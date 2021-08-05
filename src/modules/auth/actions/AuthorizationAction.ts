@@ -1,7 +1,7 @@
 import {inject, injectable} from 'inversify'
 import "reflect-metadata";
-import {TYPES} from "@/domen/inject/types";
-import {ApolloGraphql} from "@/domen/apiClient/ApolloGraphql";
+import {TYPES} from "@/domain/inject/types";
+import {ApolloGraphql} from "@/domain/apiClient/ApolloGraphql";
 import {ITokenAuth} from "@/modules/auth/entity/AuthTokenEntity";
 import {AuthorizationValue} from "@/modules/auth/values/AuthorizationValue";
 

@@ -1,7 +1,8 @@
 import {Container} from "inversify";
 import {TYPES} from "./types";
-import {ApolloGraphql} from "@/domen/apiClient/ApolloGraphql";
 import {AuthorizationAction} from "@/modules/auth/actions/AuthorizationAction";
+import {ApolloGraphql} from "@/domain/apiClient/ApolloGraphql";
+
 
 const myContainer = new Container();
 

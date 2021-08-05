@@ -1,0 +1,36 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Mutation {
+    auth(email: String!, password: String!): Token
+    createUser(email: String!, name: String!, password: String!, password_confirmation: String!): Token
+    tokenRefresh: Token
+}
+
+type Query {
+    users(email: String, id: String): [User]
+}
+
+"Token for auth user"
+type Token {
+    "Token for auth user"
+    accessToken: String
+    "Time live token"
+    expiresIn: Int
+    "Type token"
+    tokenType: String
+}
+
+"A user"
+type User {
+    "The email of user"
+    email: String
+    id: String
+    "True, if the queried user is the current user"
+    isMe: Boolean
+    name: String
+}

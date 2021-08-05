@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import {AuthorizationValue, IAuthorizationForm} from "@/modules/auth/values/AuthorizationValue";
-import {myContainer} from "@/domen/inject/inversify.config";
-import {TYPES} from "@/domen/inject/types";
+import {myContainer} from "@/domain/inject/inversify.config";
+import {TYPES} from "@/domain/inject/types";
 import {AuthorizationAction} from "@/modules/auth/actions/AuthorizationAction";
 
 
@@ -19,7 +19,7 @@ describe('Auth', () => {
     expect(value.email).toEqual("test@test.com");
     expect(value.password).toEqual("password");
   });
-  /*it('Создание value fail', () => {
+  it('Создание value fail', () => {
     let IValue : IAuthorizationForm = {
       email: "test@testcom",
       password: "password"
@@ -30,7 +30,12 @@ describe('Auth', () => {
     expect(authorizationValue.isFailure).toEqual(true);
     expect(authorizationValue.isSuccess).toEqual(false);
   });
-*/
+
+
+  /*it('Проверка ApolloGraphql', () => {
+
+  });*/
+
   it('Проверка action AuthorizationAction', () => {
     let IValue : IAuthorizationForm = {
       email: "test@test.com",
