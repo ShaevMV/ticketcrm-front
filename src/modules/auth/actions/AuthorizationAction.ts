@@ -16,6 +16,7 @@ export class AuthorizationAction {
   }
 
   getToken(value: AuthorizationValue): ITokenAuth {
+
     return {
       accessToken: "eyJ0eXAiOiJKV1QiLCJhbGciO",
       tokenType: "bearer",

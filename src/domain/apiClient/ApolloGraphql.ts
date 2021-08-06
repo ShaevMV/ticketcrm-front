@@ -2,7 +2,7 @@ import {injectable} from "inversify";
 
 @injectable()
 export class ApolloGraphql {
-  connect():boolean{
+  connect(): boolean {
     return true;
   }
 }
