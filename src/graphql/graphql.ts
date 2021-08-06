@@ -1,3 +1,4 @@
+import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
@@ -13,8 +14,11 @@ export type Scalars = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Авторизация пользователя */
   auth?: Maybe<Token>;
+  /** Регистрация нового пользователя */
   createUser?: Maybe<Token>;
+  /** Перезапрос токина */
   tokenRefresh?: Maybe<Token>;
 };
 
@@ -22,6 +26,7 @@ export type Mutation = {
 export type MutationAuthArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
+  isRememberMe?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -43,24 +48,22 @@ export type QueryUsersArgs = {
   email?: Maybe<Scalars['String']>;
 };
 
-/** Token for auth user */
+/** Токен для авторизации */
 export type Token = {
   __typename?: 'Token';
-  /** Token for auth user */
+  /** Токен для авторизации */
   accessToken?: Maybe<Scalars['String']>;
-  /** Type token */
+  /** Тип авторизации */
   tokenType?: Maybe<Scalars['String']>;
-  /** Time live token */
+  /** Время жизни токена */
   expiresIn?: Maybe<Scalars['Int']>;
 };
 
-/** A user */
+/** Данные пользователя для авторизации */
 export type User = {
   __typename?: 'User';
   id?: Maybe<Scalars['String']>;
-  /** The email of user */
+  /** Email */
   email?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  /** True, if the queried user is the current user */
-  isMe?: Maybe<Scalars['Boolean']>;
 };

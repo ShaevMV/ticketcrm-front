@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "@fireflysemantics/is": "^2.0.22",
+    "@graphql-codegen/typescript-urql": "^3.0.0",
     "@graphql-codegen/typescript-vue-apollo": "^2.3.9",
     "@types/reflect-metadata": "^0.1.0",
     "@types/validator": "^13.6.3",
+    "@urql/vue": "^0.4.3",
     "apollo-boost": "^0.4.9",
     "apollo-cache-inmemory": "^1.6.6",
     "apollo-client": "^2.6.10",

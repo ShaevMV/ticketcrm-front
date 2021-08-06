@@ -1099,6 +1099,17 @@
     "auto-bind" "~4.0.0"
     "tslib" "~2.3.0"
 
+"@graphql-codegen/typescript-urql@^3.0.0":
+  "integrity" "sha512-TVlQGOnfcE6uvHSNb5DERpx37cGlviWKGLjSGLUW+gp4LCxCauWq/OeLng4cBRwb7crU3n0RtzVuC6aOSE+6Cg=="
+  "resolved" "https://registry.npmjs.org/@graphql-codegen/typescript-urql/-/typescript-urql-3.0.0.tgz"
+  "version" "3.0.0"
+  dependencies:
+    "@graphql-codegen/plugin-helpers" "^2.0.0"
+    "@graphql-codegen/visitor-plugin-common" "2.0.0"
+    "auto-bind" "~4.0.0"
+    "change-case-all" "1.0.14"
+    "tslib" "~2.3.0"
+
 "@graphql-codegen/typescript-vue-apollo@^2.3.9":
   "integrity" "sha512-j+TpQ5hrXC8a5OS45E+Dwgn7eXJtGdIACjfjkJSoxgjZ0LrAnTDxjo5jwlK3KpVigIwGULFnrYfYBFHAmd8fPw=="
   "resolved" "https://registry.npmjs.org/@graphql-codegen/typescript-vue-apollo/-/typescript-vue-apollo-2.3.9.tgz"
@@ -2077,12 +2088,20 @@
     "@typescript-eslint/types" "4.28.4"
     "eslint-visitor-keys" "^2.0.0"
 
-"@urql/core@^2.1.4":
+"@urql/core@^2.1.4", "@urql/core@^2.1.5":
   "integrity" "sha512-wYem2NGdrFMNm9ViJo5FFoq2liU0WIp73hPppkXnVB8+U/fSwnIabTxwUy5/FsQfNVdqn3M2NgWCMU5ai79WJg=="
   "resolved" "https://registry.npmjs.org/@urql/core/-/core-2.1.6.tgz"
   "version" "2.1.6"
   dependencies:
     "@graphql-typed-document-node/core" "^3.1.0"
+    "wonka" "^4.0.14"
+
+"@urql/vue@^0.4.3":
+  "integrity" "sha512-r5KPa6kQG2BAWkfXoahUnz3I9F3ShuEyIVCZ3nEjTWn1BsgnYObLOzcGYWgKfzHRVF4XW7KGaBkGnAt9ls8yXg=="
+  "resolved" "https://registry.npmjs.org/@urql/vue/-/vue-0.4.3.tgz"
+  "version" "0.4.3"
+  dependencies:
+    "@urql/core" "^2.1.5"
     "wonka" "^4.0.14"
 
 "@vue/babel-helper-vue-jsx-merge-props@^1.2.1":

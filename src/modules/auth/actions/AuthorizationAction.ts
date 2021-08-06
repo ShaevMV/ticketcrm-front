@@ -15,7 +15,7 @@ export class AuthorizationAction {
     this._database = database;
   }
 
-  getToken(value: AuthorizationValue): ITokenAuth {
+  auth(value: AuthorizationValue): ITokenAuth {
 
     return {
       accessToken: "eyJ0eXAiOiJKV1QiLCJhbGciO",

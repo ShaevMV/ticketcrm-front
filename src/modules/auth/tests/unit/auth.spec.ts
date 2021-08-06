@@ -1,28 +1,31 @@
 import "reflect-metadata";
-import {AuthorizationValue, IAuthorizationForm} from "@/modules/auth/values/AuthorizationValue";
+import {AuthorizationValue} from "@/modules/auth/values/AuthorizationValue";
 import {myContainer} from "@/domain/inject/inversify.config";
 import {TYPES} from "@/domain/inject/types";
 import {AuthorizationAction} from "@/modules/auth/actions/AuthorizationAction";
+import {MutationAuthArgs} from "@/graphql/graphql";
 
 
 describe('Auth', () => {
   it('Создание value правильного', () => {
-    let IValue : IAuthorizationForm = {
+    let IValue : MutationAuthArgs = {
       email: "test@test.com",
-      password: "password"
+      password: "password",
+      isRememberMe: false,
     }
 
     let authorizationValue =  AuthorizationValue.create(IValue).getResult();
-    let value = authorizationValue.form;
+    let value = authorizationValue.args;
 
     expect(authorizationValue).toBeInstanceOf(AuthorizationValue);
     expect(value.email).toEqual("test@test.com");
     expect(value.password).toEqual("password");
   });
   it('Создание value fail', () => {
-    let IValue : IAuthorizationForm = {
+    let IValue : MutationAuthArgs = {
       email: "test@testcom",
-      password: "password"
+      password: "password",
+      isRememberMe: false,
     }
 
     let authorizationValue =  AuthorizationValue.create(IValue);
@@ -37,13 +40,14 @@ describe('Auth', () => {
   });*/
 
   it('Проверка action AuthorizationAction', () => {
-    let IValue : IAuthorizationForm = {
+    let IValue : MutationAuthArgs = {
       email: "test@test.com",
-      password: "password"
+      password: "password",
+      isRememberMe: false,
     }
 
     let action = myContainer.get<AuthorizationAction>(TYPES.AuthorizationAction);
-    let token = action.getToken(AuthorizationValue.create(IValue).getResult())
+    let token = action.auth(AuthorizationValue.create(IValue).getResult())
 
     expect(token.accessToken).not.toBeNull();
     expect(token.expiresIn).not.toBeNull();
