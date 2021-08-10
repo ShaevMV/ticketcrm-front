@@ -1,7 +1,7 @@
-import {IAuthorizationData} from "@/modules/auth/dto/IAuthorizationData";
+import { IAuthorizationData } from '@/modules/auth/dto/IAuthorizationData'
 
 export class AuthorizationService {
-  public auth(data: IAuthorizationData) {
-      return
+  public auth (data: IAuthorizationData) {
+
   }
 }

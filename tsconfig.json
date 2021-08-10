@@ -16,7 +16,9 @@
     "types": [
       "webpack-env",
       "reflect-metadata",
-      "jest"
+      "jest",
+      "mocha",
+      "chai"
     ],
     "paths": {
       "@/*": [

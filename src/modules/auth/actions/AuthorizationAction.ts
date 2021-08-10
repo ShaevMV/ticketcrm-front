@@ -1,26 +1,32 @@
-import {inject, injectable} from 'inversify'
-import "reflect-metadata";
-import {TYPES} from "@/domain/inject/types";
-import {ApolloGraphql} from "@/domain/apiClient/ApolloGraphql";
-import {ITokenAuth} from "@/modules/auth/entity/AuthTokenEntity";
-import {AuthorizationValue} from "@/modules/auth/values/AuthorizationValue";
+import { inject, injectable } from 'inversify'
+import 'reflect-metadata'
+import { TYPES } from '@/domain/inject/types'
+import { ApolloGraphql } from '@/domain/apiClient/ApolloGraphql'
+import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
 
 @injectable()
 export class AuthorizationAction {
-  private _database: ApolloGraphql
+  private actionClient: ApolloGraphql
 
-  public constructor(
-    @inject(TYPES.ApiClient)  database: ApolloGraphql
+  public constructor (
+    @inject(TYPES.ApiClient) actionClient: ApolloGraphql
   ) {
-    this._database = database;
+    this.actionClient = actionClient
   }
 
-  auth(value: AuthorizationValue): ITokenAuth {
+  async auth (value: AuthorizationValue) {
+    const MUTATION = `
+      mutation {
+          auth(email:"ward.maryse@example.org", password:"password") {
+            accessToken
+            tokenType
+            expiresIn
+          }
+      }
+    `
 
-    return {
-      accessToken: "eyJ0eXAiOiJKV1QiLCJhbGciO",
-      tokenType: "bearer",
-      expiresIn: 3600
-    };
+    return await this.actionClient.client
+      .mutation(MUTATION)
+      .toPromise()
   }
 }
