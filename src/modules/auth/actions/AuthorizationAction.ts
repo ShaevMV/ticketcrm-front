@@ -14,7 +14,7 @@ export class AuthorizationAction {
     this.actionClient = actionClient
   }
 
-  async auth (value: AuthorizationValue) {
+  async authSend (value: AuthorizationValue) {
     const MUTATION = `
       mutation {
           auth(email:"ward.maryse@example.org", password:"password") {

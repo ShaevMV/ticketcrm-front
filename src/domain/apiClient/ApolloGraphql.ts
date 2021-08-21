@@ -9,7 +9,7 @@ export class ApolloGraphql {
 
   constructor () {
     this._client = createClient({
-      url: process.env.URL_GRAPHQL,
+      url: 'http://172.17.0.1/graphql',
       fetch: fetch,
       exchanges: [
         dedupExchange,

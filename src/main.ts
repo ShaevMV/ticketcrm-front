@@ -8,6 +8,6 @@ createApp(App)
   .use(store)
   .use(router)
   .use(urql, {
-    url: process.env.URL_GRAPHQL
+    url: 'http://172.17.0.1/graphql'
   })
   .mount('#app')

@@ -42,7 +42,7 @@ describe('Auth', () => {
 
     const action = myContainer.get<AuthorizationAction>(TYPES.AuthorizationAction)
 
-    const token = await action.auth(AuthorizationValue.create(IValue).getResult())
+    const token = await action.authSend(AuthorizationValue.create(IValue).getResult())
     const a = 4
   })
 })
