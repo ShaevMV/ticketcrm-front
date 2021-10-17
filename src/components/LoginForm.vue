@@ -53,18 +53,6 @@ export default class LoginForm extends Vue {
       console.log(r)
     })
   }
-
-  /*private _getAuthorizationValue (): AuthorizationValue {
-    const IValue : MutationAuthArgs = {
-      email: this.email,
-      password: this.password,
-      isRememberMe: this.isRememberMe
-    }
-
-    return AuthorizationValue.create(IValue).getResult().then((r) => {
-      console.log(r)
-    })
-  }*/
 }
 </script>
 <style scoped>
