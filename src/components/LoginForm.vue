@@ -42,9 +42,9 @@ export default class LoginForm extends Vue {
 
   auth (): void {
     const IValue: MutationAuthArgs = {
-      email: 'test@test.com',
-      password: 'password',
-      isRememberMe: false
+      email: this.email,
+      password: this.password,
+      isRememberMe: this.isRememberMe
     }
 
     const action = myContainer.get<AuthorizationAction>(TYPES.AuthorizationAction)
@@ -54,15 +54,17 @@ export default class LoginForm extends Vue {
     })
   }
 
-  private _getAuthorizationValue (): AuthorizationValue {
+  /*private _getAuthorizationValue (): AuthorizationValue {
     const IValue : MutationAuthArgs = {
       email: this.email,
       password: this.password,
       isRememberMe: this.isRememberMe
     }
 
-    return AuthorizationValue.create(IValue).getResult()
-  }
+    return AuthorizationValue.create(IValue).getResult().then((r) => {
+      console.log(r)
+    })
+  }*/
 }
 </script>
 <style scoped>

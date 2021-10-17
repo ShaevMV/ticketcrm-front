@@ -16,8 +16,8 @@ export class AuthorizationAction {
 
   async authSend (value: AuthorizationValue) {
     const MUTATION = `
-      mutation {
-          auth(email:"ward.maryse@example.org", password:"password") {
+      mutation Auth($email: String!, $password: String!){
+          auth(email: $email, password: $password) {
             accessToken
             tokenType
             expiresIn
@@ -26,7 +26,10 @@ export class AuthorizationAction {
     `
 
     return await this.actionClient.client
-      .mutation(MUTATION)
+      .mutation(MUTATION, {
+        email: value.args.email,
+        password: value.args.password
+      })
       .toPromise()
   }
 }
