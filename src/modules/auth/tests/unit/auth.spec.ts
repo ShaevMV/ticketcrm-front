@@ -2,7 +2,7 @@ import 'reflect-metadata'
 import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
 import { myContainer } from '@/domain/inject/inversify.config'
 import { TYPES } from '@/domain/inject/types'
-import { AuthorizationAction } from '@/modules/auth/actions/AuthorizationAction'
+import { AuthorizationActionGraphql } from '@/modules/auth/actions/AuthorizationActionGraphql'
 import { MutationAuthArgs } from '@/graphql/graphql'
 
 describe('Auth', () => {
@@ -40,9 +40,6 @@ describe('Auth', () => {
       isRememberMe: false
     }
 
-    const action = myContainer.get<AuthorizationAction>(TYPES.AuthorizationAction)
-
-    const token = await action.authSend(AuthorizationValue.create(IValue).getResult())
-    const a = 4
+    const action = myContainer.get<AuthorizationActionGraphql>(TYPES.AuthorizationAction)
   })
 })

@@ -10,11 +10,15 @@ export interface ITokenAuth extends BaseDomainEntity {
 }
 
 export class AuthTokenEntity extends Entity<ITokenAuth> {
-  private constructor (props: ITokenAuth, id?: UniqueEntityID) {
-    super(props, id)
+  private constructor (props: ITokenAuth) {
+    super(props, new UniqueEntityID(props.accessToken))
   }
 
-  public static create (props: ITokenAuth, id?: UniqueEntityID): Result<AuthTokenEntity> {
-    return Result.ok<AuthTokenEntity>(new AuthTokenEntity(props, id))
+  public static create (props: ITokenAuth): Result<AuthTokenEntity> {
+    return Result.ok<AuthTokenEntity>(new AuthTokenEntity(props))
+  }
+
+  get id (): UniqueEntityID {
+    return this._id
   }
 }

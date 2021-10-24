@@ -25,11 +25,9 @@
 <script lang="ts">
 import 'reflect-metadata'
 import { Options, Vue } from 'vue-class-component'
-import { myContainer } from '@/domain/inject/inversify.config'
-import { TYPES } from '@/domain/inject/types'
 import { MutationAuthArgs } from '@/graphql/graphql'
 import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
-import { AuthorizationAction } from '@/modules/auth/actions/AuthorizationAction'
+import { Authorization } from '@/modules/auth/aggregate/AuthorizationAggregat'
 
 @Options({
   name: 'LoginForm'
@@ -47,9 +45,7 @@ export default class LoginForm extends Vue {
       isRememberMe: this.isRememberMe
     }
 
-    const action = myContainer.get<AuthorizationAction>(TYPES.AuthorizationAction)
-
-    action.authSend(AuthorizationValue.create(IValue).getResult()).then((r) => {
+    Authorization.auth(AuthorizationValue.create(IValue).getResult()).then((r) => {
       console.log(r)
     })
   }

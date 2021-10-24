@@ -3,9 +3,11 @@ import 'reflect-metadata'
 import { TYPES } from '@/domain/inject/types'
 import { ApolloGraphql } from '@/domain/apiClient/ApolloGraphql'
 import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
+import { ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
+import { AuthorizationActionInterface } from '@/modules/auth/actions/AuthorizationActionInterface'
 
 @injectable()
-export class AuthorizationAction {
+export class AuthorizationActionGraphql implements AuthorizationActionInterface<ITokenAuth> {
   private actionClient: ApolloGraphql
 
   public constructor (
@@ -24,12 +26,15 @@ export class AuthorizationAction {
           }
       }
     `
-
-    return await this.actionClient.client
-      .mutation(MUTATION, {
-        email: value.args.email,
-        password: value.args.password
-      })
-      .toPromise()
+    return new Promise<ITokenAuth>((resolve) => {
+      this.actionClient.client
+        .mutation(MUTATION, {
+          email: value.args.email,
+          password: value.args.password
+        }).toPromise()
+        .then((r) => {
+          resolve(r.data.auth)
+        })
+    })
   }
 }
