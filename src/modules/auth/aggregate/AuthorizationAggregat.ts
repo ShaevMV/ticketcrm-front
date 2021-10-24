@@ -7,6 +7,7 @@ import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
 import { myContainer } from '@/domain/inject/inversify.config'
 import { AuthorizationActionGraphql } from '../actions/AuthorizationActionGraphql'
 import { TYPES } from '@/domain/inject/types'
+import { AuthorizationRepository } from '@/modules/auth/repositories/AuthorizationRepository'
 
 @injectable()
 export class Authorization extends AggregateRoot<AuthTokenEntity> {
@@ -14,17 +15,25 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
     super(props, props.id)
   }
 
-  public static create (props: AuthTokenEntity): Result<Authorization> {
-    return Result.ok<Authorization>(new Authorization(props))
+  public static create (): Result<Authorization> {
+    const authorizationRepository = myContainer.get<AuthorizationRepository>(TYPES.AuthorizationRepository)
+    const tokenAuth = authorizationRepository.getToken()
+    if (tokenAuth === null) {
+      return Result.fail<Authorization>('Пользователь не авторизован')
+    }
+
+    return Result.ok<Authorization>(new Authorization(AuthTokenEntity.create(tokenAuth).getResult()))
   }
 
   public static async auth (props: AuthorizationValue): Promise<Result<Authorization>> {
     const action = myContainer.get<AuthorizationActionGraphql>(TYPES.AuthorizationAction)
-
     const tokenAuth = await action.authSend(props).then((r) => {
-      return AuthTokenEntity.create(r).getResult()
+      return r
     })
 
-    return Result.ok<Authorization>(new Authorization(tokenAuth))
+    const authorizationRepository = myContainer.get<AuthorizationRepository>(TYPES.AuthorizationRepository)
+    authorizationRepository.setToken(tokenAuth)
+
+    return Authorization.create()
   }
 }

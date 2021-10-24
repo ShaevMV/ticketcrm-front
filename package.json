@@ -101,7 +101,9 @@
     "parserOptions": {
       "ecmaVersion": 2020
     },
-    "rules": {},
+    "rules": {
+      "object-curly-spacing": "off"
+    },
     "overrides": [
       {
         "files": [
