@@ -1,6 +1,4 @@
 export interface IStorage {
-  setValue (module: string, params: string, value: any): void
-
+  setValue<T> (module: string, params: string, value: T): void
   getValue<T> (module: string, params: string): T | null
-
 }

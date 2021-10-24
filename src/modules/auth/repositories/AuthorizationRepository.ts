@@ -15,7 +15,7 @@ export class AuthorizationRepository {
   }
 
   setToken (tokenAuth: ITokenAuth): void {
-    this.storage.setValue('user', 'token', tokenAuth)
+    this.storage.setValue<ITokenAuth>('user', 'token', tokenAuth)
   }
 
   getToken (): ITokenAuth | null {

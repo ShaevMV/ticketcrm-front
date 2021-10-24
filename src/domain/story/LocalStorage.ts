@@ -16,7 +16,7 @@ export class LocalStorage implements IStorage {
     return JSON.parse(value)
   }
 
-  setValue (module: string, params: string, value: any): void {
+  setValue<T> (module: string, params: string, value: T): void {
     localStorage.setItem(this._mapping(module, params), JSON.stringify(value))
   }
 }
