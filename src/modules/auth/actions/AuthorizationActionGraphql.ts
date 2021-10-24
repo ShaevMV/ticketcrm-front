@@ -7,7 +7,7 @@ import { ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
 import { AuthorizationActionInterface } from '@/modules/auth/actions/AuthorizationActionInterface'
 
 @injectable()
-export class AuthorizationActionGraphql implements AuthorizationActionInterface<ITokenAuth> {
+export class AuthorizationActionGraphql implements AuthorizationActionInterface<ITokenAuth | null> {
   private actionClient: ApolloGraphql
 
   public constructor (

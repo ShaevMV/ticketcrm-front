@@ -28,15 +28,20 @@ import { Options, Vue } from 'vue-class-component'
 import { MutationAuthArgs } from '@/graphql/graphql'
 import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
 import { Authorization } from '@/modules/auth/aggregate/AuthorizationAggregat'
+import { mapActions } from 'vuex'
+import { ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
 
 @Options({
-  name: 'LoginForm'
+  name: 'LoginForm',
+  methods: mapActions('profile', ['updateToken'])
 })
 
 export default class LoginForm extends Vue {
   email!: string
   password!: string
   isRememberMe!: boolean
+
+  updateToken!: (value: ITokenAuth | null) => any;
 
   auth (): void {
     const IValue: MutationAuthArgs = {
@@ -45,7 +50,9 @@ export default class LoginForm extends Vue {
       isRememberMe: this.isRememberMe
     }
 
-    Authorization.auth(AuthorizationValue.create(IValue).getResult())
+    Authorization.auth(AuthorizationValue.create(IValue).getResult()).then((r) => {
+      this.updateToken(r)
+    })
   }
 }
 </script>

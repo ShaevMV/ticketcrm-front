@@ -1,7 +1,7 @@
 import { injectable } from 'inversify'
 import 'reflect-metadata'
 import AggregateRoot from 'types-ddd/dist/core/aggregate-root'
-import { AuthTokenEntity } from '@/modules/auth/entity/AuthTokenEntity'
+import { AuthTokenEntity, ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
 import Result from 'types-ddd/dist/core/result'
 import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
 import { myContainer } from '@/domain/inject/inversify.config'
@@ -25,7 +25,7 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
     return Result.ok<Authorization>(new Authorization(AuthTokenEntity.create(tokenAuth).getResult()))
   }
 
-  public static async auth (props: AuthorizationValue): Promise<Result<Authorization>> {
+  public static async auth (props: AuthorizationValue): Promise<ITokenAuth | null> {
     const action = myContainer.get<AuthorizationActionGraphql>(TYPES.AuthorizationAction)
     const tokenAuth = await action.authSend(props).then((r) => {
       return r
@@ -34,6 +34,6 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
     const authorizationRepository = myContainer.get<AuthorizationRepository>(TYPES.AuthorizationRepository)
     authorizationRepository.setToken(tokenAuth)
 
-    return Authorization.create()
+    return tokenAuth
   }
 }
