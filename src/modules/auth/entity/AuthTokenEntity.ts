@@ -21,4 +21,8 @@ export class AuthTokenEntity extends Entity<ITokenAuth> {
   get id (): UniqueEntityID {
     return this._id
   }
+
+  get token (): ITokenAuth {
+    return this.props
+  }
 }

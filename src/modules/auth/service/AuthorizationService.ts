@@ -1,23 +1,49 @@
 import 'reflect-metadata'
 import { inject, injectable } from 'inversify'
-import {AuthorizationValue} from "@/modules/auth/values/AuthorizationValue";
-import {AuthorizationActionGraphql} from "../actions/AuthorizationActionGraphql";
-import {TYPES} from "@/domain/inject/types";
+import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
+import { AuthorizationActionGraphql } from '@/modules/auth/actions/AuthorizationActionGraphql'
+import { TYPES } from '@/domain/inject/types'
+import { VuexTokenRepository } from '@/modules/auth/repositories/VuexTokenRepository'
+import { ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
+import { AuthorizationRepository } from '@/modules/auth/repositories/AuthorizationRepository'
 
 @injectable()
 export class AuthorizationService {
   private authorizationAction: AuthorizationActionGraphql
+  private localTokenRepository: AuthorizationRepository
+  private vuexTokenRepository: VuexTokenRepository
 
   public constructor (
-    @inject(TYPES.AuthorizationAction) authorizationAction: AuthorizationActionGraphql
+    @inject(TYPES.AuthorizationAction) authorizationAction: AuthorizationActionGraphql,
+    @inject(TYPES.AuthorizationRepository) localTokenRepository: AuthorizationRepository,
+    @inject(TYPES.VuexTokenRepository) vuexTokenRepository: VuexTokenRepository
   ) {
+    this.vuexTokenRepository = vuexTokenRepository
+    this.localTokenRepository = localTokenRepository
     this.authorizationAction = authorizationAction
   }
 
-  public auth (authorizationValue: AuthorizationValue) {
-    this.authorizationAction.authSend(authorizationValue)
-        .then((result)=>{
-            console.log(result)
-        })
+  /**
+   * Авторизоваться
+   *
+   * @param authorizationValue
+   */
+  public async auth (authorizationValue: AuthorizationValue): Promise<void> {
+    const tokenAuth = await this.authorizationAction.authSend(authorizationValue).then((r) => {
+      console.log(r)
+      return r
+    }).catch((expect) => {
+      console.log(expect)
+      throw expect
+    })
+
+    if (tokenAuth !== null) {
+      this.localTokenRepository.setToken(tokenAuth)
+      this.vuexTokenRepository.setToken(tokenAuth)
+    }
+  }
+
+  public getToken (): ITokenAuth | null {
+    return this.localTokenRepository.getToken()
   }
 }

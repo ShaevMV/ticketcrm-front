@@ -3,12 +3,12 @@ import { injectable } from 'inversify'
 
 @injectable()
 export class LocalStorage implements IStorage {
-  _mapping (module: string, params: string): string {
+  private static mapping (module: string, params: string): string {
     return module + '.' + params
   }
 
   getValue<T> (module: string, params: string): T | null {
-    const value = localStorage.getItem(this._mapping(module, params))
+    const value = localStorage.getItem(LocalStorage.mapping(module, params))
     if (value === null) {
       return null
     }
@@ -17,6 +17,6 @@ export class LocalStorage implements IStorage {
   }
 
   setValue<T> (module: string, params: string, value: T): void {
-    localStorage.setItem(this._mapping(module, params), JSON.stringify(value))
+    localStorage.setItem(LocalStorage.mapping(module, params), JSON.stringify(value))
   }
 }

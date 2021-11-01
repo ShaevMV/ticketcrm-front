@@ -4,10 +4,6 @@ import { MutationAuthArgs } from '@/graphql/graphql'
 import validator from 'validator'
 
 export class AuthorizationValue extends ValueObject<MutationAuthArgs> {
-  private constructor (prop: MutationAuthArgs) {
-    super(prop)
-  }
-
   public static create (prop: MutationAuthArgs): Result<AuthorizationValue> {
     if (!validator.isEmail(prop.email)) {
       return Result.fail<AuthorizationValue>('Логин должен быть email')

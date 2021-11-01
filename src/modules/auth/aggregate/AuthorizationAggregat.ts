@@ -5,9 +5,10 @@ import { AuthTokenEntity, ITokenAuth } from '@/modules/auth/entity/AuthTokenEnti
 import Result from 'types-ddd/dist/core/result'
 import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
 import { myContainer } from '@/domain/inject/inversify.config'
-import { AuthorizationActionGraphql } from '../actions/AuthorizationActionGraphql'
 import { TYPES } from '@/domain/inject/types'
-import { AuthorizationRepository } from '@/modules/auth/repositories/AuthorizationRepository'
+import { AuthorizationService } from '@/modules/auth/service/AuthorizationService'
+console.log(21321)
+const authorizationService = myContainer.get<AuthorizationService>(TYPES.AuthorizationService)
 
 @injectable()
 export class Authorization extends AggregateRoot<AuthTokenEntity> {
@@ -15,9 +16,11 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
     super(props, props.id)
   }
 
+  /**
+   * Создать агрегат авторизация
+   */
   public static create (): Result<Authorization> {
-    const authorizationRepository = myContainer.get<AuthorizationRepository>(TYPES.AuthorizationRepository)
-    const tokenAuth = authorizationRepository.getToken()
+    const tokenAuth = authorizationService.getToken()
     if (tokenAuth === null) {
       return Result.fail<Authorization>('Пользователь не авторизован')
     }
@@ -25,15 +28,29 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
     return Result.ok<Authorization>(new Authorization(AuthTokenEntity.create(tokenAuth).getResult()))
   }
 
-  public static async auth (props: AuthorizationValue): Promise<ITokenAuth | null> {
-    const action = myContainer.get<AuthorizationActionGraphql>(TYPES.AuthorizationAction)
-    const tokenAuth = await action.authSend(props).then((r) => {
-      return r
-    })
+  /**
+   * Авторизация пользователя
+   *
+   * @param authorizationValue
+   */
+  public static async auth (authorizationValue: Result<AuthorizationValue>): Promise<Result<Authorization>> {
+    try {
+      if (authorizationValue.isFailure === true) {
+        throw authorizationValue.error.toString()
+      }
+      await authorizationService.auth(authorizationValue.getResult())
 
-    const authorizationRepository = myContainer.get<AuthorizationRepository>(TYPES.AuthorizationRepository)
-    authorizationRepository.setToken(tokenAuth)
+      return Authorization.create()
+    } catch (e) {
+      console.log(e)
+      return Result.fail<Authorization>(e)
+    }
+  }
 
-    return tokenAuth
+  /**
+   * Вывести токен
+   */
+  public getToken (): ITokenAuth {
+    return this.props.token
   }
 }

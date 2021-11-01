@@ -16,7 +16,7 @@ export class AuthorizationActionGraphql implements AuthorizationActionInterface<
     this.actionClient = actionClient
   }
 
-  async authSend (value: AuthorizationValue) {
+  async authSend (value: AuthorizationValue): Promise<ITokenAuth> {
     const MUTATION = `
       mutation Auth($email: String!, $password: String!){
           auth(email: $email, password: $password) {
@@ -26,14 +26,18 @@ export class AuthorizationActionGraphql implements AuthorizationActionInterface<
           }
       }
     `
-    return new Promise<ITokenAuth>((resolve) => {
+    return new Promise<ITokenAuth>((resolve, reject) => {
       this.actionClient.client
         .mutation(MUTATION, {
           email: value.args.email,
           password: value.args.password
         }).toPromise()
         .then((r) => {
+          console.log(r.data.auth)
           resolve(r.data.auth)
+        }).catch((expect) => {
+          console.log(expect.errors.message)
+          reject(expect.errors.message)
         })
     })
   }
