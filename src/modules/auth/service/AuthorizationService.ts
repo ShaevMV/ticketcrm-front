@@ -5,17 +5,17 @@ import { AuthorizationActionGraphql } from '@/modules/auth/actions/Authorization
 import { TYPES } from '@/domain/inject/types'
 import { VuexTokenRepository } from '@/modules/auth/repositories/VuexTokenRepository'
 import { ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
-import { AuthorizationRepository } from '@/modules/auth/repositories/AuthorizationRepository'
+import { AuthorizationLocalRepository } from '@/modules/auth/repositories/AuthorizationLocalRepository'
 
 @injectable()
 export class AuthorizationService {
   private authorizationAction: AuthorizationActionGraphql
-  private localTokenRepository: AuthorizationRepository
+  private localTokenRepository: AuthorizationLocalRepository
   private vuexTokenRepository: VuexTokenRepository
 
   public constructor (
     @inject(TYPES.AuthorizationAction) authorizationAction: AuthorizationActionGraphql,
-    @inject(TYPES.AuthorizationRepository) localTokenRepository: AuthorizationRepository,
+    @inject(TYPES.AuthorizationLocalRepository) localTokenRepository: AuthorizationLocalRepository,
     @inject(TYPES.VuexTokenRepository) vuexTokenRepository: VuexTokenRepository
   ) {
     this.vuexTokenRepository = vuexTokenRepository

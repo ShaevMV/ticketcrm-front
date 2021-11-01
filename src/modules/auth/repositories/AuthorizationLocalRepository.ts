@@ -5,7 +5,7 @@ import { LocalStorage } from '@/domain/story/LocalStorage'
 import { ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
 
 @injectable()
-export class AuthorizationRepository {
+export class AuthorizationLocalRepository {
   private storage: LocalStorage
 
   public constructor (

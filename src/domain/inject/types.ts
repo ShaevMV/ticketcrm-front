@@ -3,7 +3,7 @@ import { AuthorizationService } from '@/modules/auth/service/AuthorizationServic
 import { Authorization } from '@/modules/auth/aggregate/AuthorizationAggregat'
 import { VuexStorage } from '@/domain/story/VuexStorage'
 import { VuexTokenRepository } from '@/modules/auth/repositories/VuexTokenRepository'
-import { AuthorizationRepository } from '@/modules/auth/repositories/AuthorizationRepository'
+import { AuthorizationLocalRepository } from '@/modules/auth/repositories/AuthorizationLocalRepository'
 
 const TYPES = {
   ApiClient: Symbol.for('ApolloGraphql'),
@@ -11,7 +11,7 @@ const TYPES = {
   VuexStorage: Symbol.for('VuexStorage'),
   AuthorizationAction: Symbol.for('AuthorizationAction'),
   AuthorizationService: Symbol.for('AuthorizationService'),
-  AuthorizationRepository: Symbol.for('AuthorizationRepository'),
+  AuthorizationLocalRepository: Symbol.for('AuthorizationLocalRepository'),
   VuexTokenRepository: Symbol.for('VuexTokenRepository'),
   Authorization: Symbol.for('Authorization')
 }
