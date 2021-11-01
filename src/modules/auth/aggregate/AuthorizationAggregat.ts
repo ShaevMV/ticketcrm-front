@@ -4,7 +4,7 @@ import AggregateRoot from 'types-ddd/dist/core/aggregate-root'
 import { AuthTokenEntity, ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
 import Result from 'types-ddd/dist/core/result'
 import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
-import { myContainer } from '@/domain/inject/inversifeBind.config'
+import { myContainer } from '@/domain/inject/inversify.config'
 import { TYPES } from '@/domain/inject/types'
 import { AuthorizationService } from '@/modules/auth/service/AuthorizationService'
 const authorizationService = myContainer.get<AuthorizationService>(TYPES.AuthorizationService)

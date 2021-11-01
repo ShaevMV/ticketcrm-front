@@ -3,7 +3,6 @@ import { inject, injectable } from 'inversify'
 import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
 import { AuthorizationActionGraphql } from '@/modules/auth/actions/AuthorizationActionGraphql'
 import { TYPES } from '@/domain/inject/types'
-import { VuexTokenRepository } from '@/modules/auth/repositories/VuexTokenRepository'
 import { ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
 import { AuthorizationLocalRepository } from '@/modules/auth/repositories/AuthorizationLocalRepository'
 
@@ -11,14 +10,11 @@ import { AuthorizationLocalRepository } from '@/modules/auth/repositories/Author
 export class AuthorizationService {
   private authorizationAction: AuthorizationActionGraphql
   private localTokenRepository: AuthorizationLocalRepository
-  private vuexTokenRepository: VuexTokenRepository
 
   public constructor (
     @inject(TYPES.AuthorizationAction) authorizationAction: AuthorizationActionGraphql,
-    @inject(TYPES.AuthorizationLocalRepository) localTokenRepository: AuthorizationLocalRepository,
-    @inject(TYPES.VuexTokenRepository) vuexTokenRepository: VuexTokenRepository
+    @inject(TYPES.AuthorizationLocalRepository) localTokenRepository: AuthorizationLocalRepository
   ) {
-    this.vuexTokenRepository = vuexTokenRepository
     this.localTokenRepository = localTokenRepository
     this.authorizationAction = authorizationAction
   }
@@ -39,7 +35,6 @@ export class AuthorizationService {
 
     if (tokenAuth !== null) {
       this.localTokenRepository.setToken(tokenAuth)
-      this.vuexTokenRepository.setToken(tokenAuth)
     }
   }
 

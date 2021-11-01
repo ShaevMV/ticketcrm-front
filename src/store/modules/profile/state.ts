@@ -1,14 +1,11 @@
-import { myContainer } from '@/domain/inject/inversify.config'
-import { TYPES } from '@/domain/inject/types'
 import { ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
-import { AuthorizationLocalRepository } from '@/modules/auth/repositories/AuthorizationLocalRepository'
+import { Authorization } from '@/modules/auth/aggregate/AuthorizationAggregat'
 
-const authorizationLocalRepository = myContainer.get<AuthorizationLocalRepository>(TYPES.AuthorizationLocalRepository)
-
+const authorization = Authorization.create()
 export type State = {
   token: ITokenAuth | null;
 }
 
 export const state = {
-  token: authorizationLocalRepository.getToken()
+  token: authorization.isSuccess ? authorization.getResult().getToken() : null
 }

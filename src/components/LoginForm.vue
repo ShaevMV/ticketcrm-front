@@ -53,6 +53,8 @@ export default class LoginForm extends Vue {
     Authorization.auth(AuthorizationValue.create(IValue)).then((r) => {
       if (r.isFailure) {
         console.error(r.error)
+      } else {
+        this.updateToken(r.getResult().getToken())
       }
     })
   }
