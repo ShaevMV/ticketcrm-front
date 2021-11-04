@@ -2,11 +2,10 @@ import { inject, injectable } from 'inversify'
 import 'reflect-metadata'
 import { DOMAIN_TYPES } from '@/domain/inject/types'
 import { VuexStorage } from '@/domain/story/VuexStorage'
-import { ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
 
 @injectable()
-export class VuexTokenRepository {
-  private storage: VuexStorage;
+export class VuexExceptionRepository {
+  private storage: VuexStorage
 
   public constructor (
     @inject(DOMAIN_TYPES.VuexStorage) storage: VuexStorage
@@ -14,7 +13,7 @@ export class VuexTokenRepository {
     this.storage = storage
   }
 
-  setToken (tokenAuth: ITokenAuth): void {
-    this.storage.setValue<ITokenAuth>('profile', 'updateToken', tokenAuth)
+  public setError (module: string, field: string, massage: string): void {
+    this.storage.setValue<string>(module, field, massage)
   }
 }

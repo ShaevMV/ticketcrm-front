@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify'
 import 'reflect-metadata'
-import { TYPES } from '@/domain/inject/types'
+import { DOMAIN_TYPES } from '@/domain/inject/types'
 import { LocalStorage } from '@/domain/story/LocalStorage'
 import { ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
 
@@ -9,7 +9,7 @@ export class AuthorizationLocalRepository {
   private storage: LocalStorage
 
   public constructor (
-    @inject(TYPES.LocalStorage) storage: LocalStorage
+    @inject(DOMAIN_TYPES.LocalStorage) storage: LocalStorage
   ) {
     this.storage = storage
   }

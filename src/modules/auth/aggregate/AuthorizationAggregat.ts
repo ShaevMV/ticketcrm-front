@@ -4,13 +4,13 @@ import AggregateRoot from 'types-ddd/dist/core/aggregate-root'
 import { AuthTokenEntity, ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
 import Result from 'types-ddd/dist/core/result'
 import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
-import { myContainer } from '@/domain/inject/inversify.config'
-import { TYPES } from '@/domain/inject/types'
+import { domainContainer } from '@/modules/auth/inject/inversify.config'
 import { AuthorizationService } from '@/modules/auth/service/AuthorizationService'
 import { LoginBadRequestException } from '@/modules/auth/exeptions/LoginBadRequestException'
-import { ExceptionAggregate } from '@/domain/exception/ExceptionAggregate'
+import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
+import { AUTH_TYPES } from '@/modules/auth/inject/types'
 
-const authorizationService = myContainer.get<AuthorizationService>(TYPES.AuthorizationService)
+const authorizationService = domainContainer.get<AuthorizationService>(AUTH_TYPES.AuthorizationService)
 
 @injectable()
 export class Authorization extends AggregateRoot<AuthTokenEntity> {
@@ -46,7 +46,6 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
       return Authorization.create()
     } catch (e) {
       const exception = ExceptionAggregate.create(e)
-      console.log(exception.userMassage)
       return Result.fail<Authorization>(exception.userMassage)
     }
   }

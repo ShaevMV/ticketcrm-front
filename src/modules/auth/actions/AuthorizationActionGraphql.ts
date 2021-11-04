@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify'
 import 'reflect-metadata'
-import { TYPES } from '@/domain/inject/types'
+import { DOMAIN_TYPES } from '@/domain/inject/types'
 import { ApolloGraphql } from '@/domain/apiClient/ApolloGraphql'
 import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
 import { ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
@@ -12,7 +12,7 @@ export class AuthorizationActionGraphql implements AuthorizationActionInterface<
   private actionClient: ApolloGraphql
 
   public constructor (
-    @inject(TYPES.ApiClient) actionClient: ApolloGraphql
+    @inject(DOMAIN_TYPES.ApiClient) actionClient: ApolloGraphql
   ) {
     this.actionClient = actionClient
   }
