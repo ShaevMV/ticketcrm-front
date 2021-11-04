@@ -1,7 +1,7 @@
 import { injectable } from 'inversify'
 import 'reflect-metadata'
 import AggregateRoot from 'types-ddd/dist/core/aggregate-root'
-import { AuthTokenEntity, ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
+import { AuthTokenEntity, ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
 import Result from 'types-ddd/dist/core/result'
 import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
 import { domainContainer } from '@/modules/auth/inject/inversify.config'
@@ -46,6 +46,7 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
       return Authorization.create()
     } catch (e) {
       const exception = ExceptionAggregate.create(e)
+
       return Result.fail<Authorization>(exception.userMassage)
     }
   }

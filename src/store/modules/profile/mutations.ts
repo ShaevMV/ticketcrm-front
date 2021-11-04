@@ -1,6 +1,6 @@
 import { MutationTree } from 'vuex'
 import { State } from '@/store/modules/profile/state'
-import { ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
+import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
 
 export type Mutations<S = State> = {
   setToken (state: S, payload: ITokenAuth | null): void

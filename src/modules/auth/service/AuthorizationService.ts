@@ -2,7 +2,7 @@ import 'reflect-metadata'
 import { inject, injectable } from 'inversify'
 import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
 import { AuthorizationActionGraphql } from '@/modules/auth/actions/AuthorizationActionGraphql'
-import { ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
+import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
 import { AuthorizationLocalRepository } from '@/modules/auth/repositories/AuthorizationLocalRepository'
 import { VuexTokenRepository } from '@/modules/auth/repositories/VuexTokenRepository'
 import { AUTH_TYPES } from '@/modules/auth/inject/types'
@@ -14,7 +14,7 @@ export class AuthorizationService {
   private localTokenRepository: AuthorizationLocalRepository
 
   public constructor (
-    @inject(AUTH_TYPES.AuthorizationAction) authorizationAction: AuthorizationActionGraphql,
+    @inject(AUTH_TYPES.AuthorizationActionGraphql) authorizationAction: AuthorizationActionGraphql,
     @inject(AUTH_TYPES.AuthorizationLocalRepository) localTokenRepository: AuthorizationLocalRepository,
     @inject(AUTH_TYPES.VuexTokenRepository) vuexTokenRepository: VuexTokenRepository
   ) {

@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify'
 import 'reflect-metadata'
 import { DOMAIN_TYPES } from '@/domain/inject/types'
 import { LocalStorage } from '@/domain/story/LocalStorage'
-import { ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
+import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
 
 @injectable()
 export class AuthorizationLocalRepository {

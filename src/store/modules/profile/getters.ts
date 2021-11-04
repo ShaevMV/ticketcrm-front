@@ -1,6 +1,6 @@
 import { GetterTree } from 'vuex'
 import { State } from '@/store/modules/profile/state'
-import { ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
+import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
 import { RootState } from '@/store'
 export type Getters = {
   getToken(state: State): ITokenAuth | null

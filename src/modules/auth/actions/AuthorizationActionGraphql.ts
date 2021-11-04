@@ -3,7 +3,7 @@ import 'reflect-metadata'
 import { DOMAIN_TYPES } from '@/domain/inject/types'
 import { ApolloGraphql } from '@/domain/apiClient/ApolloGraphql'
 import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
-import { ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
+import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
 import { AuthorizationActionInterface } from '@/modules/auth/actions/AuthorizationActionInterface'
 import { LoginUnauthorizedException } from '@/modules/auth/exeptions/LoginUnauthorizedException'
 

@@ -1,4 +1,4 @@
-import { ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
+import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
 
 export type State = {
   token: ITokenAuth | null;

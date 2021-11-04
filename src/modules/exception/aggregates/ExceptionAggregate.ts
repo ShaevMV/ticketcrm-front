@@ -1,19 +1,24 @@
-import { Exception } from '@tsed/exceptions/lib/core/Exception'
+import { IExceptionModule } from '@/domain/exception/IExceptionModule'
+import { domainContainer } from '@/modules/exception/inject/inversify.config'
+import { ExceptionService } from '@/modules/exception/services/ExceptionService'
+import { EXCEPTION_TYPES } from '@/modules/exception/inject/types'
 
 const STATUS_SERVER_ERROR = 500
 const MASSAGE_SERVER_ERROR = 'Ошибка на сервере, попробуйте позже'
+const exceptionService = domainContainer.get<ExceptionService>(EXCEPTION_TYPES.ExceptionService)
 
 /**
  * Агрегат для обработки исключений
  */
 export class ExceptionAggregate {
-  private exception: Exception
+  private readonly exception: IExceptionModule
 
-  private constructor (exception: Exception) {
+  private constructor (exception: IExceptionModule) {
     this.exception = exception
   }
 
-  public static create (exception: Exception): ExceptionAggregate {
+  public static create (exception: IExceptionModule): ExceptionAggregate {
+    exceptionService.pushError(exception)
     return new ExceptionAggregate(exception)
   }
 

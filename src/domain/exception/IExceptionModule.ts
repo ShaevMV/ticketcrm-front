@@ -1,4 +1,6 @@
-export interface IExceptionModule {
+import BaseDomainEntity from 'types-ddd/dist/core/base-domain-entity'
+
+export interface IExceptionModule extends BaseDomainEntity {
   status: number,
   message: string,
   module: string,

@@ -8,6 +8,9 @@
              id="exampleInputEmail1"
              aria-describedby="emailHelp"
              placeholder="Enter email">
+      <div class="error">
+        <span class="html-error">{{ getMassage('auth', 'login') }}</span>
+      </div>
       <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
     </div>
     <div class="form-group">
@@ -17,6 +20,9 @@
     <div class="form-check">
       <input type="checkbox" v-model="isRememberMe" class="form-check-input" id="exampleCheck1">
       <label class="form-check-label" for="exampleCheck1">Check me out</label>
+    </div>
+    <div class="error">
+      <span class="html-error">{{ getMassage('auth', 'auth') }}</span>
     </div>
     <button type="submit" v-on:click="auth" class="btn btn-primary">login</button>
   </div>
@@ -28,12 +34,13 @@ import { Options, Vue } from 'vue-class-component'
 import { MutationAuthArgs } from '@/graphql/graphql'
 import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
 import { Authorization } from '@/modules/auth/aggregate/AuthorizationAggregat'
-import { mapActions } from 'vuex'
-import { ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
+import { mapActions, mapGetters } from 'vuex'
+import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
 
 @Options({
   name: 'LoginForm',
-  methods: mapActions('profile', ['updateToken'])
+  methods: mapActions('profile', ['updateToken']),
+  computed: mapGetters('exception', ['getMassage'])
 })
 
 export default class LoginForm extends Vue {
@@ -51,6 +58,7 @@ export default class LoginForm extends Vue {
     }
 
     Authorization.auth(AuthorizationValue.create(IValue))
+
   }
 }
 </script>
