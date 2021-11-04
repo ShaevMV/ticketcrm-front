@@ -24,6 +24,7 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
       return Result.fail<Authorization>('Пользователь не авторизован')
     }
 
+    authorizationService.setVuexToken(tokenAuth)
     return Result.ok<Authorization>(new Authorization(AuthTokenEntity.create(tokenAuth).getResult()))
   }
 
@@ -34,14 +35,13 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
    */
   public static async auth (authorizationValue: Result<AuthorizationValue>): Promise<Result<Authorization>> {
     try {
-      if (authorizationValue.isFailure === true) {
+      if (authorizationValue.isFailure) {
         throw authorizationValue.error.toString()
       }
       await authorizationService.auth(authorizationValue.getResult())
 
       return Authorization.create()
     } catch (e) {
-      console.log(e)
       return Result.fail<Authorization>(e)
     }
   }

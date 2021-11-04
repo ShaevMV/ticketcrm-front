@@ -37,7 +37,7 @@ export class AuthorizationActionGraphql implements AuthorizationActionInterface<
           resolve(r.data.auth)
         }).catch((expect) => {
           console.log(expect.errors.message)
-          reject(expect.errors.message)
+          reject(expect.error.message)
         })
     })
   }
