@@ -9,10 +9,12 @@ export class VuexStorage implements IStorage {
   }
 
   getValue<T> (module: string, params: string): T | null {
-    return null;
+    return null
   }
 
   setValue<T> (module: string, params: string, value: T): void {
-    store.dispatch(VuexStorage.mapping(module, params), value).then(r =>{})
+    store.dispatch(VuexStorage.mapping(module, params), value).then(r => {
+      console.log(r)
+    })
   }
 }

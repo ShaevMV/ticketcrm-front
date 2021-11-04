@@ -5,6 +5,7 @@ import { ApolloGraphql } from '@/domain/apiClient/ApolloGraphql'
 import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
 import { ITokenAuth } from '@/modules/auth/entity/AuthTokenEntity'
 import { AuthorizationActionInterface } from '@/modules/auth/actions/AuthorizationActionInterface'
+import { LoginUnauthorizedException } from '@/modules/auth/exeptions/LoginUnauthorizedException'
 
 @injectable()
 export class AuthorizationActionGraphql implements AuthorizationActionInterface<ITokenAuth | null> {
@@ -33,11 +34,11 @@ export class AuthorizationActionGraphql implements AuthorizationActionInterface<
           password: value.args.password
         }).toPromise()
         .then((r) => {
-          console.log(r.data.auth)
-          resolve(r.data.auth)
-        }).catch((expect) => {
-          console.log(expect.errors.message)
-          reject(expect.error.message)
+          if (r.error !== undefined) {
+            reject(new LoginUnauthorizedException(r.error.message))
+          } else {
+            resolve(r.data.auth)
+          }
         })
     })
   }

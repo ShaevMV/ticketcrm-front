@@ -50,13 +50,7 @@ export default class LoginForm extends Vue {
       isRememberMe: this.isRememberMe
     }
 
-    Authorization.auth(AuthorizationValue.create(IValue)).then((r) => {
-      if (r.isFailure) {
-        console.error(r.error)
-      } else {
-        this.updateToken(r.getResult().getToken())
-      }
-    })
+    Authorization.auth(AuthorizationValue.create(IValue))
   }
 }
 </script>

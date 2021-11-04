@@ -30,7 +30,6 @@ export class AuthorizationService {
    */
   public async auth (authorizationValue: AuthorizationValue): Promise<void> {
     const tokenAuth = await this.authorizationAction.authSend(authorizationValue).then((r) => {
-      console.log(r)
       return r
     }).catch((expect) => {
       console.log(expect)

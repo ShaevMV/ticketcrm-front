@@ -7,6 +7,9 @@ import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
 import { myContainer } from '@/domain/inject/inversify.config'
 import { TYPES } from '@/domain/inject/types'
 import { AuthorizationService } from '@/modules/auth/service/AuthorizationService'
+import { LoginBadRequestException } from '@/modules/auth/exeptions/LoginBadRequestException'
+import { ExceptionAggregate } from '@/domain/exception/ExceptionAggregate'
+
 const authorizationService = myContainer.get<AuthorizationService>(TYPES.AuthorizationService)
 
 @injectable()
@@ -36,13 +39,15 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
   public static async auth (authorizationValue: Result<AuthorizationValue>): Promise<Result<Authorization>> {
     try {
       if (authorizationValue.isFailure) {
-        throw authorizationValue.error.toString()
+        throw new LoginBadRequestException(authorizationValue.error.toString())
       }
       await authorizationService.auth(authorizationValue.getResult())
 
       return Authorization.create()
     } catch (e) {
-      return Result.fail<Authorization>(e)
+      const exception = ExceptionAggregate.create(e)
+      console.log(exception.userMassage)
+      return Result.fail<Authorization>(exception.userMassage)
     }
   }
 
