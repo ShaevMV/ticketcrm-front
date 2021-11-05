@@ -32,7 +32,6 @@ export class AuthorizationService {
     const tokenAuth = await this.authorizationAction.authSend(authorizationValue).then((r) => {
       return r
     }).catch((expect) => {
-      console.log(expect)
       throw expect
     })
 
@@ -45,8 +44,13 @@ export class AuthorizationService {
   /**
    * Получить токен
    */
-  public getToken (): ITokenAuth | null {
-    return this.localTokenRepository.getToken()
+  public getToken (isLoadPage: boolean): ITokenAuth | null {
+    const token = this.localTokenRepository.getToken()
+    if (isLoadPage && !token?.isRemember) {
+      return null
+    }
+
+    return token
   }
 
   /**

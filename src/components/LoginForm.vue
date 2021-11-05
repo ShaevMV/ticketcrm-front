@@ -48,7 +48,7 @@ export default class LoginForm extends Vue {
   password!: string
   isRememberMe!: boolean
 
-  updateToken!: (value: ITokenAuth | null) => any;
+  updateToken!: (value: ITokenAuth | null) => any
 
   auth (): void {
     const IValue: MutationAuthArgs = {
@@ -58,7 +58,6 @@ export default class LoginForm extends Vue {
     }
 
     Authorization.auth(AuthorizationValue.create(IValue))
-
   }
 }
 </script>

@@ -15,4 +15,8 @@ export class VuexStorage implements IStorage {
   setValue<T> (module: string, params: string, value: T): void {
     store.dispatch(VuexStorage.mapping(module, params), value)
   }
+
+  clearValue (module: string, params: string): void {
+    store.dispatch(VuexStorage.mapping(module, params), null)
+  }
 }

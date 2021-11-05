@@ -37,7 +37,14 @@ export class AuthorizationActionGraphql implements AuthorizationActionInterface<
           if (r.error !== undefined) {
             reject(new LoginUnauthorizedException(r.error.message))
           } else {
-            resolve(r.data.auth)
+            const result: ITokenAuth = {
+              accessToken: r.data.auth.accessToken,
+              expiresIn: r.data.auth.expiresIn,
+              isRemember: value.args.isRememberMe ?? false,
+              tokenType: r.data.auth.tokenType
+            }
+
+            resolve(result)
           }
         })
     })

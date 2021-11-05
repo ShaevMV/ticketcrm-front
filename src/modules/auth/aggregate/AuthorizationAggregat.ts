@@ -21,8 +21,8 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
   /**
    * Создать агрегат авторизация
    */
-  public static create (): Result<Authorization> {
-    const tokenAuth = authorizationService.getToken()
+  public static create (isLoadPage = true): Result<Authorization> {
+    const tokenAuth = authorizationService.getToken(isLoadPage)
     if (tokenAuth === null) {
       return Result.fail<Authorization>('Пользователь не авторизован')
     }
@@ -43,7 +43,7 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
       }
       await authorizationService.auth(authorizationValue.getResult())
 
-      return Authorization.create()
+      return Authorization.create(false)
     } catch (e) {
       const exception = ExceptionAggregate.create(e)
 

@@ -7,6 +7,7 @@ export interface ITokenAuth extends BaseDomainEntity {
   accessToken: string;
   tokenType: string;
   expiresIn: number;
+  isRemember: boolean;
 }
 
 export class AuthTokenEntity extends Entity<ITokenAuth> {
