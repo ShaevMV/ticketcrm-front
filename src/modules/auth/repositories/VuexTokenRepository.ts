@@ -3,6 +3,7 @@ import 'reflect-metadata'
 import { DOMAIN_TYPES } from '@/domain/inject/types'
 import { VuexStorage } from '@/domain/story/VuexStorage'
 import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
+import { ProfileActionsTypes, ProfileModuleTypes } from '@/store/modules/profile/types'
 
 @injectable()
 export class VuexTokenRepository {
@@ -15,6 +16,6 @@ export class VuexTokenRepository {
   }
 
   setToken (tokenAuth: ITokenAuth): void {
-    this.storage.setValue<ITokenAuth>('profile', 'updateToken', tokenAuth)
+    this.storage.setValue<ITokenAuth>([ProfileModuleTypes.PROFILE_MODULE].toString(), [ProfileActionsTypes.UPDATE_TOKEN].toString(), tokenAuth)
   }
 }

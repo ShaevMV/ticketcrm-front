@@ -9,7 +9,7 @@ export class VuexStorage implements IStorage {
   }
 
   getValue<T> (module: string, params: string): T | null {
-    return null
+    return store.getters(VuexStorage.mapping(module, params))
   }
 
   setValue<T> (module: string, params: string, value: T): void {

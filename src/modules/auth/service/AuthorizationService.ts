@@ -37,7 +37,6 @@ export class AuthorizationService {
 
     if (tokenAuth !== null) {
       this.localTokenRepository.setToken(tokenAuth)
-      this.vuexTokenRepository.setToken(tokenAuth)
     }
   }
 
