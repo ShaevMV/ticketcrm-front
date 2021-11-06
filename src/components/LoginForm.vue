@@ -34,21 +34,20 @@ import { Options, Vue } from 'vue-class-component'
 import { MutationAuthArgs } from '@/graphql/graphql'
 import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
 import { Authorization } from '@/modules/auth/aggregate/AuthorizationAggregat'
-import { mapActions, mapGetters } from 'vuex'
-import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
+import { mapGetters } from 'vuex'
+import { ExceptionGettersTypes, ExceptionModuleTypes } from '@/store/modules/exception/types'
 
 @Options({
   name: 'LoginForm',
-  methods: mapActions('profile', ['updateToken']),
-  computed: mapGetters('exception', ['getMassage'])
+  computed: mapGetters([ExceptionModuleTypes.PROFILE_MODULE].toString(), {
+    getMassage: [ExceptionGettersTypes.GET_MASSAGE].toString()
+  })
 })
 
 export default class LoginForm extends Vue {
   email!: string
   password!: string
   isRememberMe!: boolean
-
-  updateToken!: (value: ITokenAuth | null) => any
 
   auth (): void {
     const IValue: MutationAuthArgs = {

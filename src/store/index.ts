@@ -3,6 +3,7 @@ import createPersistedState from 'vuex-persistedstate'
 import { store as profile, ProfileStore, State as ProfileState } from '@/store/modules/profile'
 import { store as exception, ExceptionStore, State as ExceptionState } from '@/store/modules/exception'
 import { ProfileModuleTypes } from '@/store/modules/profile/types'
+import { ExceptionModuleTypes } from '@/store/modules/exception/types'
 
 // Plug in logger when in development environment
 const debug = process.env.NODE_ENV !== 'production'
@@ -13,7 +14,7 @@ plugins.push(createPersistedState({ storage: window.sessionStorage }))
 
 export type RootState = {
   [ProfileModuleTypes.PROFILE_MODULE]: ProfileState,
-  exception: ExceptionState
+  [ExceptionModuleTypes.PROFILE_MODULE]: ExceptionState
 };
 
 export type Store = ProfileStore<RootState> & ExceptionStore<RootState>
@@ -22,7 +23,7 @@ export const store = createStore({
   plugins,
   modules: {
     [ProfileModuleTypes.PROFILE_MODULE]: profile,
-    exception
+    [ExceptionModuleTypes.PROFILE_MODULE]: exception
   }
 })
 

@@ -3,6 +3,7 @@ import 'reflect-metadata'
 import { DOMAIN_TYPES } from '@/domain/inject/types'
 import { VuexStorage } from '@/domain/story/VuexStorage'
 import { IExceptionModule } from '@/domain/exception/IExceptionModule'
+import { ExceptionActionsTypes, ExceptionModuleTypes } from '@/store/modules/exception/types'
 
 @injectable()
 export class VuexExceptionRepository {
@@ -15,6 +16,10 @@ export class VuexExceptionRepository {
   }
 
   public setError (error: IExceptionModule): void {
-    this.storage.setValue<IExceptionModule>('exception', 'setError', error)
+    this.storage.setValue<IExceptionModule>(
+      [ExceptionModuleTypes.PROFILE_MODULE].toString(),
+      [ExceptionActionsTypes.SET_ERROR].toString(),
+      error
+    )
   }
 }
