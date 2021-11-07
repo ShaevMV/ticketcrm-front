@@ -16,10 +16,17 @@ export interface Actions {
   [ExceptionActionsTypes.SET_ERROR] (
     { commit }: AugmentedActionContext,
     value: IExceptionModule): void
+  [ExceptionActionsTypes.CLEAR_ERROR] (
+    { commit }: AugmentedActionContext,
+    module: string): void
 }
 
 export const actions: ActionTree<State, RootState> & Actions = {
   [ExceptionActionsTypes.SET_ERROR] ({ commit }, value: IExceptionModule): void {
     commit(ExceptionMutationsTypes.SET_ERROR, value)
+  },
+
+  [ExceptionActionsTypes.CLEAR_ERROR] ({ commit }, module: string): void {
+    commit(ExceptionMutationsTypes.CLEAR_ERROR, module)
   }
 }

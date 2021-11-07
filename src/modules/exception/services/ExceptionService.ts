@@ -3,6 +3,7 @@ import { inject, injectable } from 'inversify'
 import { EXCEPTION_TYPES } from '@/modules/exception/inject/types'
 import { VuexExceptionRepository } from '@/modules/exception/repositories/VuexExceptionRepository'
 import { IExceptionModule } from '@/domain/exception/IExceptionModule'
+import { ExceptionMapper } from '@/modules/exception/mappers/ExceptionMapper'
 
 @injectable()
 export class ExceptionService {
@@ -15,13 +16,10 @@ export class ExceptionService {
   }
 
   public pushError (error: IExceptionModule): void {
-    const userError: IExceptionModule = {
-      field: error.field,
-      message: error.message,
-      module: error.module,
-      status: error.status
-    }
+    this.vuexExceptionRepository.setError(ExceptionMapper.map(error))
+  }
 
-    this.vuexExceptionRepository.setError(userError)
+  public clearErrorByModule (module: string): void {
+    this.vuexExceptionRepository.clear(module)
   }
 }

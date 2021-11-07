@@ -22,4 +22,12 @@ export class VuexExceptionRepository {
       error
     )
   }
+
+  public clear (module: string): void {
+    this.storage.setValue<string>(
+      [ExceptionModuleTypes.PROFILE_MODULE].toString(),
+      [ExceptionActionsTypes.CLEAR_ERROR].toString(),
+      module
+    )
+  }
 }

@@ -6,7 +6,7 @@ import Result from 'types-ddd/dist/core/result'
 import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
 import { domainContainer } from '@/modules/auth/inject/inversify.config'
 import { AuthorizationService } from '@/modules/auth/service/AuthorizationService'
-import { LoginBadRequestException } from '@/modules/auth/exeptions/LoginBadRequestException'
+import { LOGIN_BAD_REQUEST_MODULE, LoginBadRequestException } from '@/modules/auth/exeptions/LoginBadRequestException'
 import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
 import { AUTH_TYPES } from '@/modules/auth/inject/types'
 
@@ -38,6 +38,8 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
    */
   public static async auth (authorizationValue: Result<AuthorizationValue>): Promise<Result<Authorization>> {
     try {
+      ExceptionAggregate.clear(LOGIN_BAD_REQUEST_MODULE)
+
       if (authorizationValue.isFailure) {
         throw new LoginBadRequestException(authorizationValue.error.toString())
       }
