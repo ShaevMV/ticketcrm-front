@@ -60,4 +60,8 @@ export class AuthorizationService {
   public setVuexToken (token: ITokenAuth): void {
     this.vuexTokenRepository.setToken(token)
   }
+
+  public setLocalToken (token: ITokenAuth): void {
+    this.localTokenRepository.setToken(token)
+  }
 }

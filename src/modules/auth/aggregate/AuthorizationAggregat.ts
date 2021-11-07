@@ -9,8 +9,10 @@ import { AuthorizationService } from '@/modules/auth/service/AuthorizationServic
 import { LOGIN_BAD_REQUEST_MODULE, LoginBadRequestException } from '@/modules/auth/exeptions/LoginBadRequestException'
 import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
 import { AUTH_TYPES } from '@/modules/auth/inject/types'
+import { AuthorizationRefreshService } from '@/modules/auth/service/AuthorizationRefreshService'
 
 const authorizationService = domainContainer.get<AuthorizationService>(AUTH_TYPES.AuthorizationService)
+const authorizationRefreshService = domainContainer.get<AuthorizationRefreshService>(AUTH_TYPES.AuthorizationRefreshService)
 
 @injectable()
 export class Authorization extends AggregateRoot<AuthTokenEntity> {
@@ -21,13 +23,20 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
   /**
    * Создать агрегат авторизация
    */
-  public static create (isLoadPage = true): Result<Authorization> {
-    const tokenAuth = authorizationService.getToken(isLoadPage)
+  public static async create (isLoadPage = true): Promise<Result<Authorization>> {
+    let tokenAuth = authorizationService.getToken(isLoadPage)
     if (tokenAuth === null) {
       return Result.fail<Authorization>('Пользователь не авторизован')
     }
 
+    if (authorizationRefreshService.isNeedRefresh(tokenAuth)) {
+      console.log(tokenAuth)
+      tokenAuth = await authorizationRefreshService.refreshToken(tokenAuth)
+      authorizationService.setLocalToken(tokenAuth)
+      console.log(tokenAuth)
+    }
     authorizationService.setVuexToken(tokenAuth)
+
     return Result.ok<Authorization>(new Authorization(AuthTokenEntity.create(tokenAuth).getResult()))
   }
 

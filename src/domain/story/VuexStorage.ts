@@ -4,7 +4,7 @@ import { store } from '@/store'
 
 @injectable()
 export class VuexStorage implements IStorage {
-  private static mapping (module: string, params: string): string {
+  public static mapping (module: string, params: string): string {
     return module + '/' + params
   }
 
