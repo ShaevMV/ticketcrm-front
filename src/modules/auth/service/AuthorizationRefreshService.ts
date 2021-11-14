@@ -1,26 +1,38 @@
 import 'reflect-metadata'
 import { inject, injectable } from 'inversify'
 import { AUTH_TYPES } from '@/modules/auth/inject/types'
-import { AuthorizationActionGraphql } from '@/modules/auth/actions/AuthorizationActionGraphql'
 import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
+import { RefreshActionGraphql } from '@/modules/auth/actions/RefreshActionGraphql'
+import { AuthorizationLocalRepository } from '@/modules/auth/repositories/AuthorizationLocalRepository'
 
 @injectable()
 export class AuthorizationRefreshService {
-  private authorizationAction: AuthorizationActionGraphql
+  private authorizationAction: RefreshActionGraphql
+  private authorizationLocalRepository: AuthorizationLocalRepository;
 
   public constructor (
-    @inject(AUTH_TYPES.AuthorizationActionGraphql) authorizationAction: AuthorizationActionGraphql
+    @inject(AUTH_TYPES.RefreshActionGraphql) authorizationAction: RefreshActionGraphql,
+    @inject(AUTH_TYPES.AuthorizationLocalRepository) authorizationLocalRepository: AuthorizationLocalRepository
   ) {
+    this.authorizationLocalRepository = authorizationLocalRepository
     this.authorizationAction = authorizationAction
   }
 
-  public async refreshToken (token: ITokenAuth): Promise<ITokenAuth> {
+  public async getToken (): Promise<ITokenAuth | null> {
+    const tokenAuth = this.authorizationLocalRepository.getToken()
+    if (tokenAuth !== null && AuthorizationRefreshService.isNeedRefresh(tokenAuth)) {
+      return await this.refreshToken(tokenAuth)
+    }
+    return tokenAuth
+  }
+
+  private async refreshToken (token: ITokenAuth): Promise<ITokenAuth> {
     return await this.authorizationAction.refresh(token).then(r => {
       return r
     })
   }
 
-  public isNeedRefresh (token: ITokenAuth): boolean {
+  private static isNeedRefresh (token: ITokenAuth): boolean {
     return token.expiresIn <= Date.now()
   }
 }

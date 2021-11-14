@@ -1,31 +1,28 @@
-import { injectable } from 'inversify'
+import { inject, injectable } from 'inversify'
 import { createClient } from '@urql/core'
 import { Client, dedupExchange, cacheExchange, fetchExchange } from 'urql'
-import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
-
-function getToken (): ITokenAuth | null {
-  const token = localStorage.getItem('user.token')
-  if (token === null) {
-    return null
-  }
-
-  return JSON.parse(token).accessToken
-}
+import { AUTH_TYPES } from '@/modules/auth/inject/types'
+import { AuthorizationRefreshService } from '@/modules/auth/service/AuthorizationRefreshService'
 
 @injectable()
 export class ApolloGraphql {
-  private readonly _client: Client
+  private refreshService: AuthorizationRefreshService
 
-  constructor () {
-    this._client = createClient({
+  constructor (
+    @inject(AUTH_TYPES.AuthorizationRefreshService) refreshService: AuthorizationRefreshService
+  ) {
+    this.refreshService = refreshService
+  }
+
+  public async getClient (): Promise<Client> {
+    const token = await this.refreshService.getToken()
+    return createClient({
       url: 'http://api.ticket.loc/graphql',
       fetchOptions: () => {
-        const token = getToken()
-
         return {
           headers: {
             'Content-Type': 'application/json',
-            authorization: token ? 'bearer ' + token : ''
+            authorization: token ? token.tokenType + ' ' + token : ''
           }
         }
       },
@@ -35,9 +32,5 @@ export class ApolloGraphql {
         fetchExchange
       ]
     })
-  }
-
-  public get client (): Client {
-    return this._client
   }
 }

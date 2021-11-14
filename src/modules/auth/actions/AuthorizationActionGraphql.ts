@@ -4,12 +4,12 @@ import { DOMAIN_TYPES } from '@/domain/inject/types'
 import { ApolloGraphql } from '@/domain/apiClient/ApolloGraphql'
 import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
 import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
-import { AuthorizationActionInterface } from '@/modules/auth/actions/AuthorizationActionInterface'
+import { IAuthorizationAction } from '@/modules/auth/actions/IAuthorizationAction'
 import { LoginUnauthorizedException } from '@/modules/auth/exeptions/LoginUnauthorizedException'
 import { TokenAuthMapper } from '@/modules/auth/mappers/TokenAuthMapper'
 
 @injectable()
-export class AuthorizationActionGraphql implements AuthorizationActionInterface<ITokenAuth | null> {
+export class AuthorizationActionGraphql implements IAuthorizationAction<ITokenAuth | null> {
   private actionClient: ApolloGraphql
 
   public constructor (
@@ -29,42 +29,19 @@ export class AuthorizationActionGraphql implements AuthorizationActionInterface<
       }
     `
     return new Promise<ITokenAuth>((resolve, reject) => {
-      this.actionClient.client
-        .mutation(MUTATION, {
+      this.actionClient.getClient().then(r => {
+        r.mutation(MUTATION, {
           email: value.args.email,
           password: value.args.password
         }).toPromise()
-        .then((r) => {
-          if (r.error !== undefined) {
-            reject(new LoginUnauthorizedException(r.error.message))
-          } else {
-            resolve(TokenAuthMapper.map(r.data.auth, value.args.isRememberMe ?? false))
-          }
-        })
-    })
-  }
-
-  async refresh (value: ITokenAuth): Promise<ITokenAuth> {
-    const MUTATION = `
-      mutation {
-          tokenRefresh {
-            accessToken
-            tokenType
-            expiresIn
-          }
-      }
-    `
-
-    return new Promise<ITokenAuth>((resolve, reject) => {
-      this.actionClient.client
-        .mutation(MUTATION).toPromise()
-        .then((r) => {
-          if (r.error !== undefined) {
-            reject(new LoginUnauthorizedException(r.error.message))
-          } else {
-            resolve(TokenAuthMapper.map(r.data.tokenRefresh, value.isRemember))
-          }
-        })
+          .then((r) => {
+            if (r.error !== undefined) {
+              reject(new LoginUnauthorizedException(r.error.message))
+            } else {
+              resolve(TokenAuthMapper.map(r.data.auth, value.args.isRememberMe ?? false))
+            }
+          })
+      })
     })
   }
 }
