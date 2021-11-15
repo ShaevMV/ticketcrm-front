@@ -17,7 +17,7 @@ export class ApolloGraphql {
   public async getClient (): Promise<Client> {
     const token = await this.refreshService.getToken()
     return createClient({
-      url: 'http://api.ticket.loc/graphql',
+      url: 'http://api.ticket.loc/graphql?XDEBUG_SESSION_START=PHPSTORM',
       fetchOptions: () => {
         return {
           headers: {

@@ -6,31 +6,59 @@ schema {
 }
 
 type Mutation {
-    auth(email: String!, password: String!): Token
-    createUser(email: String!, name: String!, password: String!, password_confirmation: String!): Token
+    "Авторизация пользователя"
+    auth(
+        "Email пользователя для авторизации"
+        email: String!,
+        "Флаг выбора того что пользователь нажал галочку запомнить меня"
+        isRememberMe: Boolean,
+        "Пароль пользователя для авторизации"
+        password: String!
+    ): Token
+    "Регистрация нового пользователя"
+    registration(
+        "Email пользователя"
+        email: String!,
+        "Имя пользователя"
+        name: String!,
+        "Пароль пользователя для авторизации"
+        password: String!,
+        "Повтор пароля"
+        password_confirmation: String!
+    ): UserDataForRegistration
+    "Перезапрос токина"
     tokenRefresh: Token
 }
 
 type Query {
-    users(email: String, id: String): [User]
+    users(
+        "email пользователя"
+        email: String,
+        "UUid пользователя"
+        id: Int
+    ): [UserDataForAuthType]
 }
 
-"Token for auth user"
+"Токен для авторизации"
 type Token {
-    "Token for auth user"
+    "Токен для авторизации"
     accessToken: String
-    "Time live token"
+    "Время жизни токена"
     expiresIn: Int
-    "Type token"
+    "Тип авторизации"
     tokenType: String
 }
 
-"A user"
-type User {
-    "The email of user"
+"Данные пользователя"
+type UserDataForAuthType {
+    "Email"
     email: String
     id: String
-    "True, if the queried user is the current user"
-    isMe: Boolean
     name: String
+}
+
+"Данные пользователя после регистрации"
+type UserDataForRegistration {
+    token: Token
+    user: UserDataForAuthType
 }

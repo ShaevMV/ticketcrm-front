@@ -25,6 +25,7 @@
       <span class="html-error">{{ getMassage('auth', 'auth') }}</span>
     </div>
     <button type="submit" v-on:click="auth" class="btn btn-primary">login</button>
+    <span class="link-info" v-on:click="doRegistration">Регистрация</span>
   </div>
 </template>
 
@@ -57,6 +58,10 @@ export default class LoginForm extends Vue {
     }
 
     Authorization.auth(AuthorizationValue.create(IValue))
+  }
+
+  doRegistration (): void {
+    this.$emit('showRegistration', true)
   }
 }
 </script>
