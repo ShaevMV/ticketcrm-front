@@ -6,7 +6,7 @@ import BaseDomainEntity from 'types-ddd/dist/core/base-domain-entity'
 export interface IUserData extends BaseDomainEntity {
   email: string,
   name: string,
-  id: number
+  id: string
 }
 
 export class UserDataEntity extends Entity<IUserData> {

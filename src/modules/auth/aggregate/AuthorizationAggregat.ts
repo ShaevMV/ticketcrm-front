@@ -21,6 +21,7 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
 
   /**
    * Создать агрегат авторизация
+   * @param isLoadPage загрузка странице (для реализации isRememberMe)
    */
   public static create (isLoadPage = true): Result<Authorization> {
     const tokenAuth = authorizationService.getToken(isLoadPage)
@@ -35,9 +36,20 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
   }
 
   /**
+   * Записать токен в хранилище
+   * @param token
+   */
+  public static inAuth (token: ITokenAuth | null): void {
+    if (token !== null) {
+      authorizationService.setLocalToken(token)
+      authorizationService.setVuexToken(token)
+    }
+  }
+
+  /**
    * Авторизация пользователя
    *
-   * @param authorizationValue
+   * @param authorizationValue данные для авторизации
    */
   public static async auth (authorizationValue: Result<AuthorizationValue>): Promise<Result<Authorization>> {
     try {

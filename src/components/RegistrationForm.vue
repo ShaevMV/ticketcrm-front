@@ -50,6 +50,7 @@ import { mapGetters } from 'vuex'
 import { ExceptionGettersTypes, ExceptionModuleTypes } from '@/store/modules/exception/types'
 import { MutationRegistrationArgs } from '@/graphql/graphql'
 import { Profile } from '@/modules/profile/aggregates/ProfileAggregate'
+import { Authorization } from '@/modules/auth/aggregate/AuthorizationAggregat'
 
 @Options({
   name: 'RegistrationForm',
@@ -76,7 +77,9 @@ export default class Registration extends Vue {
       password_confirmation: this.passwordConfirmation
     }
 
-    Profile.registration(value)
+    Profile.registration(value).then(token => {
+      Authorization.inAuth(token)
+    })
   }
 }
 </script>

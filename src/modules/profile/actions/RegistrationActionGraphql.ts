@@ -6,6 +6,8 @@ import { IRegistrationAction } from '@/modules/profile/actions/IRegistrationActi
 import { IUserData } from '@/modules/profile/entitys/UserDataEntity'
 import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
 import { RegistrationDataValue } from '@/modules/profile/values/RegistrationDataValue'
+import { TokenAuthMapper } from '@/modules/auth/mappers/TokenAuthMapper'
+import { ProfileDataMapper } from '@/modules/profile/mappers/ProfileDataMapper'
 
 @injectable()
 export class RegistrationActionGraphql implements IRegistrationAction<null | { user: IUserData, token: ITokenAuth }> {
@@ -47,8 +49,10 @@ export class RegistrationActionGraphql implements IRegistrationAction<null | { u
               console.log(r)
               // reject(new LoginUnauthorizedException(r.error.message))
             } else {
-              console.log(r)
-              // resolve(TokenAuthMapper.map(r.data.auth, value.args.isRememberMe ?? false))
+              resolve({
+                token: TokenAuthMapper.map(r.data.registration.token, false),
+                user: ProfileDataMapper.map(r.data.registration.user)
+              })
             }
           })
       })

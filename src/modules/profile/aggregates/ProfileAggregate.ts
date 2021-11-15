@@ -10,6 +10,7 @@ import Result from 'types-ddd/dist/core/result'
 import { domainContainer } from '@/modules/profile/inject/inversify.config'
 import { RegistrationService } from '@/modules/profile/services/RegistrationService'
 import { PROFILE_TYPES } from '@/modules/profile/inject/types'
+import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
 
 const authorizationService = domainContainer.get<RegistrationService>(PROFILE_TYPES.RegistrationService)
 
@@ -19,16 +20,15 @@ export class Profile extends AggregateRoot<UserDataEntity> {
     super(props, props.id)
   }
 
-  public static async registration (value: MutationRegistrationArgs) {
+  public static async registration (value: MutationRegistrationArgs): Promise<ITokenAuth | null> {
     ExceptionAggregate.clear(REGISTRATION_MODULE)
 
     try {
       const registrationDataValue = RegistrationDataValue.create(value)
-      await authorizationService.registrationUser(registrationDataValue.getResult())
+      return await authorizationService.registrationUser(registrationDataValue.getResult())
     } catch (e) {
-      const exception = ExceptionAggregate.create(e)
-
-      return Result.fail<Profile>(exception.userMassage)
+      ExceptionAggregate.create(e)
+      return null
     }
   }
 }
