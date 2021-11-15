@@ -46,6 +46,7 @@ export class AuthorizationService {
   public getToken (isLoadPage: boolean): ITokenAuth | null {
     const token = this.localTokenRepository.getToken()
     if (isLoadPage && !token?.isRemember) {
+      this.localTokenRepository.clearToken()
       return null
     }
 

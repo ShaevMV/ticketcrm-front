@@ -8,7 +8,7 @@
              id="inputEmail"
              placeholder="Enter email">
       <div class="error">
-        <span class="html-error">{{ getMassage('registration', 'login') }}</span>
+        <span class="html-error">{{ getMassage('registration', 'email') }}</span>
       </div>
     </div>
     <div class="form-group">
@@ -71,10 +71,10 @@ export default class Registration extends Vue {
 
   userRegistration (): void {
     const value: MutationRegistrationArgs = {
-      email: this.email,
-      name: this.name,
-      password: this.password,
-      password_confirmation: this.passwordConfirmation
+      email: this.email ?? null,
+      name: this.name ?? null,
+      password: this.password ?? null,
+      password_confirmation: this.passwordConfirmation ?? null
     }
 
     Profile.registration(value).then(token => {

@@ -8,6 +8,7 @@ import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
 import { RegistrationDataValue } from '@/modules/profile/values/RegistrationDataValue'
 import { TokenAuthMapper } from '@/modules/auth/mappers/TokenAuthMapper'
 import { ProfileDataMapper } from '@/modules/profile/mappers/ProfileDataMapper'
+import { ExceptionResponseMapper } from '@/modules/exception/mappers/ExceptionResponseMapper'
 
 @injectable()
 export class RegistrationActionGraphql implements IRegistrationAction<null | { user: IUserData, token: ITokenAuth }> {
@@ -46,8 +47,9 @@ export class RegistrationActionGraphql implements IRegistrationAction<null | { u
         }).toPromise()
           .then((r) => {
             if (r.error !== undefined) {
-              console.log(r)
-              // reject(new LoginUnauthorizedException(r.error.message))
+              ExceptionResponseMapper.map(r.error).then(error => {
+                reject(error)
+              })
             } else {
               resolve({
                 token: TokenAuthMapper.map(r.data.registration.token, false),

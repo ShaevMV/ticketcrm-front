@@ -16,6 +16,7 @@ export class VuexExceptionRepository {
   }
 
   public setError (error: IExceptionModule): void {
+    console.log(error)
     this.storage.setValue<IExceptionModule>(
       [ExceptionModuleTypes.PROFILE_MODULE].toString(),
       [ExceptionActionsTypes.SET_ERROR].toString(),
