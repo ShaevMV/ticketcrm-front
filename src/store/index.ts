@@ -14,7 +14,7 @@ plugins.push(createPersistedState({ storage: window.sessionStorage }))
 
 export type RootState = {
   [ProfileModuleTypes.PROFILE_MODULE]: ProfileState,
-  [ExceptionModuleTypes.PROFILE_MODULE]: ExceptionState
+  [ExceptionModuleTypes.EXCEPTION_MODULE]: ExceptionState
 };
 
 export type Store = ProfileStore<RootState> & ExceptionStore<RootState>
@@ -23,7 +23,7 @@ export const store = createStore({
   plugins,
   modules: {
     [ProfileModuleTypes.PROFILE_MODULE]: profile,
-    [ExceptionModuleTypes.PROFILE_MODULE]: exception
+    [ExceptionModuleTypes.EXCEPTION_MODULE]: exception
   }
 })
 

@@ -54,7 +54,7 @@ import { Authorization } from '@/modules/auth/aggregate/AuthorizationAggregat'
 
 @Options({
   name: 'RegistrationForm',
-  computed: mapGetters([ExceptionModuleTypes.PROFILE_MODULE].toString(), {
+  computed: mapGetters([ExceptionModuleTypes.EXCEPTION_MODULE].toString(), {
     getMassage: [ExceptionGettersTypes.GET_MASSAGE].toString()
   })
 })

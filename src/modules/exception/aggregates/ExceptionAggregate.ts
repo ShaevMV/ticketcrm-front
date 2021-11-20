@@ -41,4 +41,12 @@ export class ExceptionAggregate extends AggregateRoot<IExceptionModule> {
   public static clear (module: string): void {
     exceptionService.clearErrorByModule(module)
   }
+
+  /**
+   * Проверка наличе ошибки в компоненте
+   * @param component
+   */
+  public static isExists (component: string): boolean {
+    return exceptionService.isExistsByModule(component)
+  }
 }

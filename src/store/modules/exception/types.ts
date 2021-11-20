@@ -1,5 +1,5 @@
 export enum ExceptionModuleTypes {
-  PROFILE_MODULE = 'exception',
+  EXCEPTION_MODULE = 'exception',
 }
 
 export enum ExceptionActionsTypes {
@@ -15,4 +15,5 @@ export enum ExceptionMutationsTypes {
 export enum ExceptionGettersTypes {
   GET_MASSAGE = 'GET_MASSAGE',
   IS_EXISTS_ERROR = 'IS_EXISTS_ERROR',
+  GET_ERRORS_BY_MODULE = 'GET_ERRORS_BY_MODULE',
 }

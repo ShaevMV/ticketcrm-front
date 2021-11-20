@@ -25,6 +25,7 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
    */
   public static create (isLoadPage = true): Result<Authorization> {
     const tokenAuth = authorizationService.getToken(isLoadPage)
+    console.log(tokenAuth)
     if (tokenAuth === null) {
       return Result.fail<Authorization>('Пользователь не авторизован')
     }
@@ -52,19 +53,18 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
    * @param authorizationValue данные для авторизации
    */
   public static async auth (authorizationValue: Result<AuthorizationValue>): Promise<Result<Authorization>> {
-    try {
-      ExceptionAggregate.clear(LOGIN_UNAUTHORIZED_MODULE)
+    ExceptionAggregate.clear(LOGIN_UNAUTHORIZED_MODULE)
+    console.log(213)
+    if (authorizationValue.isFailure) {
+      ExceptionAggregate.create(new LoginBadRequestException(authorizationValue.error.toString()))
+    }
+    await authorizationService.auth(authorizationValue.getResult())
 
-      if (authorizationValue.isFailure) {
-        throw new LoginBadRequestException(authorizationValue.error.toString())
-      }
-      await authorizationService.auth(authorizationValue.getResult())
-
+    if (ExceptionAggregate.isExists(LOGIN_UNAUTHORIZED_MODULE)) {
+      console.log(213)
+      return Result.fail<Authorization>('Error')
+    } else {
       return Authorization.create(false)
-    } catch (e) {
-      const exception = ExceptionAggregate.create(e)
-
-      return Result.fail<Authorization>(exception.userMassage)
     }
   }
 

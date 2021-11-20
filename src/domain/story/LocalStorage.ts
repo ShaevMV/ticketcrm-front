@@ -7,7 +7,7 @@ export class LocalStorage implements IStorage {
     return module + '.' + params
   }
 
-  getValue<T> (module: string, params: string): T | null {
+  getValue<T> (module: string, params: string, props?: any): T | null {
     const value = localStorage.getItem(LocalStorage.mapping(module, params))
     if (value === null) {
       return null

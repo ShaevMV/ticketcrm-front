@@ -7,6 +7,7 @@ import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
 import { IAuthorizationAction } from '@/modules/auth/actions/IAuthorizationAction'
 import { LoginUnauthorizedException } from '@/modules/auth/exeptions/LoginUnauthorizedException'
 import { TokenAuthMapper } from '@/modules/auth/mappers/TokenAuthMapper'
+import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
 
 @injectable()
 export class AuthorizationActionGraphql implements IAuthorizationAction<ITokenAuth | null> {
@@ -36,7 +37,7 @@ export class AuthorizationActionGraphql implements IAuthorizationAction<ITokenAu
         }).toPromise()
           .then((r) => {
             if (r.error !== undefined) {
-              reject(new LoginUnauthorizedException(r.error.message))
+              ExceptionAggregate.create(new LoginUnauthorizedException(r.error.message))
             } else {
               resolve(TokenAuthMapper.map(r.data.auth, value.args.isRememberMe ?? false))
             }

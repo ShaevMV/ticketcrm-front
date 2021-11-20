@@ -3,7 +3,7 @@ import 'reflect-metadata'
 import { DOMAIN_TYPES } from '@/domain/inject/types'
 import { VuexStorage } from '@/domain/story/VuexStorage'
 import { IExceptionModule } from '@/domain/exception/IExceptionModule'
-import { ExceptionActionsTypes, ExceptionModuleTypes } from '@/store/modules/exception/types'
+import { ExceptionActionsTypes, ExceptionGettersTypes, ExceptionModuleTypes } from '@/store/modules/exception/types'
 
 @injectable()
 export class VuexExceptionRepository {
@@ -15,20 +15,43 @@ export class VuexExceptionRepository {
     this.storage = storage
   }
 
+  /**
+   * Добавить ошибку в хранилище
+   *
+   * @param error Ошибка
+   */
   public setError (error: IExceptionModule): void {
-    console.log(error)
     this.storage.setValue<IExceptionModule>(
-      [ExceptionModuleTypes.PROFILE_MODULE].toString(),
+      [ExceptionModuleTypes.EXCEPTION_MODULE].toString(),
       [ExceptionActionsTypes.SET_ERROR].toString(),
       error
     )
   }
 
-  public clear (module: string): void {
+  /**
+   * Очистить хранилище по компоненту
+   *
+   * @param moduleName название модуля
+   */
+  public clear (moduleName: string): void {
     this.storage.setValue<string>(
-      [ExceptionModuleTypes.PROFILE_MODULE].toString(),
+      [ExceptionModuleTypes.EXCEPTION_MODULE].toString(),
       [ExceptionActionsTypes.CLEAR_ERROR].toString(),
-      module
+      moduleName
     )
+  }
+
+  /**
+   * Найти все ошибки в компоненте
+   *
+   * @param moduleName название модуля
+   */
+  public findByModule (moduleName: string): Array<IExceptionModule> | null {
+    const errors = this.storage.getValue<Array<IExceptionModule>>(
+      [ExceptionModuleTypes.EXCEPTION_MODULE].toString(),
+      [ExceptionGettersTypes.GET_ERRORS_BY_MODULE].toString()
+    )
+
+    return errors !== null ? errors.filter(error => error.module === moduleName) : null
   }
 }

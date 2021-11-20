@@ -6,3 +6,8 @@ export interface IExceptionModule extends BaseDomainEntity {
   module: string,
   field: string,
 }
+
+
+export interface IExceptionModuleList extends BaseDomainEntity {
+  listException: Array<IExceptionModule>
+}

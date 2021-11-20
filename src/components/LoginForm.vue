@@ -40,7 +40,7 @@ import { ExceptionGettersTypes, ExceptionModuleTypes } from '@/store/modules/exc
 
 @Options({
   name: 'LoginForm',
-  computed: mapGetters([ExceptionModuleTypes.PROFILE_MODULE].toString(), {
+  computed: mapGetters([ExceptionModuleTypes.EXCEPTION_MODULE].toString(), {
     getMassage: [ExceptionGettersTypes.GET_MASSAGE].toString()
   })
 })

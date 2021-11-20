@@ -4,9 +4,6 @@ const GraphQL = '[GraphQL] '
 
 export class ExceptionMapper {
   public static map (error: IExceptionModule): IExceptionModule {
-    console.log(error)
-    console.log(error.message)
-
     return {
       field: error.field,
       message: ExceptionMapper.clearMessage(error.message),
