@@ -9,6 +9,7 @@ import { RegistrationDataValue } from '@/modules/profile/values/RegistrationData
 import { TokenAuthMapper } from '@/modules/auth/mappers/TokenAuthMapper'
 import { ProfileDataMapper } from '@/modules/profile/mappers/ProfileDataMapper'
 import { ExceptionResponseMapper } from '@/modules/exception/mappers/ExceptionResponseMapper'
+import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
 
 @injectable()
 export class RegistrationActionGraphql implements IRegistrationAction<null | { user: IUserData, token: ITokenAuth }> {
@@ -37,7 +38,7 @@ export class RegistrationActionGraphql implements IRegistrationAction<null | { u
           }
       }
     `
-    return new Promise<{ user: IUserData; token: ITokenAuth } | null>((resolve, reject) => {
+    return new Promise<{ user: IUserData; token: ITokenAuth } | null>((resolve) => {
       this.actionClient.getClient().then(r => {
         r.mutation(MUTATION, {
           email: value.args.email,
@@ -48,7 +49,7 @@ export class RegistrationActionGraphql implements IRegistrationAction<null | { u
           .then((r) => {
             if (r.error !== undefined) {
               ExceptionResponseMapper.map(r.error).then(error => {
-                reject(error)
+                ExceptionAggregate.create(error)
               })
             } else {
               resolve({

@@ -4,6 +4,7 @@ import router from './router'
 import { store } from './store'
 import urql from '@urql/vue'
 import { Authorization } from '@/modules/auth/aggregate/AuthorizationAggregat'
+import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
 
 createApp(App)
   .use(store)
@@ -14,3 +15,4 @@ createApp(App)
   .mount('#app')
 
 Authorization.create()
+ExceptionAggregate.allClear()

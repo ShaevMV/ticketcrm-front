@@ -38,8 +38,12 @@ export class ExceptionAggregate extends AggregateRoot<IExceptionModule> {
     return this.isUserException() ? this.massage : MASSAGE_SERVER_ERROR
   }
 
-  public static clear (module: string): void {
-    exceptionService.clearErrorByModule(module)
+  public static clear (component: string): void {
+    exceptionService.clearErrorByComponent(component)
+  }
+
+  public static allClear (): void {
+    exceptionService.clearError()
   }
 
   /**
@@ -47,6 +51,6 @@ export class ExceptionAggregate extends AggregateRoot<IExceptionModule> {
    * @param component
    */
   public static isExists (component: string): boolean {
-    return exceptionService.isExistsByModule(component)
+    return exceptionService.isExistsByComponent(component)
   }
 }

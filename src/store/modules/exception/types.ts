@@ -5,11 +5,13 @@ export enum ExceptionModuleTypes {
 export enum ExceptionActionsTypes {
   SET_ERROR = 'SET_ERROR',
   CLEAR_ERROR = 'CLEAR_ERROR',
+  CLEAR_ALL_ERROR = 'CLEAR_ALL_ERROR',
 }
 
 export enum ExceptionMutationsTypes {
   SET_ERROR = 'SET_ERROR',
   CLEAR_ERROR = 'CLEAR_ERROR',
+  CLEAR_ALL_ERROR = 'CLEAR_ALL_ERROR',
 }
 
 export enum ExceptionGettersTypes {

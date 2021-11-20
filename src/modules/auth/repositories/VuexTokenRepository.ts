@@ -16,10 +16,20 @@ export class VuexTokenRepository {
   }
 
   /**
-   * Записать токин в хранилище
+   * Очистить токен
+   */
+  public clearToken (): void {
+    this.storage.clearValue(
+      [ProfileModuleTypes.PROFILE_MODULE].toString(),
+      [ProfileActionsTypes.UPDATE_TOKEN].toString()
+    )
+  }
+
+  /**
+   * Записать токен в хранилище
    * @param tokenAuth
    */
-  setToken (tokenAuth: ITokenAuth): void {
+  public setToken (tokenAuth: ITokenAuth): void {
     this.storage.setValue<ITokenAuth>(
       [ProfileModuleTypes.PROFILE_MODULE].toString(),
       [ProfileActionsTypes.UPDATE_TOKEN].toString(),

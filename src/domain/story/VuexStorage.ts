@@ -23,7 +23,7 @@ export class VuexStorage implements IStorage {
    * @param params
    * @param value
    */
-  setValue<T> (module: string, params: string, value: T): void {
+  setValue<T> (module: string, params: string, value?: T): void {
     store.dispatch(VuexStorage.mapping(module, params), value)
   }
 

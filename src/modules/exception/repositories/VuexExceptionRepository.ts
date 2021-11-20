@@ -54,4 +54,14 @@ export class VuexExceptionRepository {
 
     return errors !== null ? errors.filter(error => error.module === moduleName) : null
   }
+
+  /**
+   * Очистить все ошибки во всех компонентах
+   */
+  public clearAll ():void {
+    this.storage.setValue<undefined>(
+      [ExceptionModuleTypes.EXCEPTION_MODULE].toString(),
+      [ExceptionActionsTypes.CLEAR_ALL_ERROR].toString()
+    )
+  }
 }

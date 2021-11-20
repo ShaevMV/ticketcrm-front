@@ -1,11 +1,11 @@
 <template>
   <div class="container">
     <div class="form-group">
-      <label for="inputEmail">Email address</label>
+      <label for="inputLogin">Email address</label>
       <input type="email"
              v-model="email"
              class="form-control"
-             id="inputEmail"
+             id="inputLogin"
              placeholder="Enter email">
       <div class="error">
         <span class="html-error">{{ getMassage('registration', 'email') }}</span>

@@ -24,10 +24,11 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
    * @param isLoadPage загрузка странице (для реализации isRememberMe)
    */
   public static create (isLoadPage = true): Result<Authorization> {
-    const tokenAuth = authorizationService.getToken(isLoadPage)
+    const tokenAuth = authorizationService.findToken()
+
     if (tokenAuth === null ||
       authorizationService.isClearToken(isLoadPage, tokenAuth?.isRemember ?? false)) {
-      authorizationService.clearLocalToken()
+      authorizationService.clearToken()
       return Result.fail<Authorization>('Пользователь не авторизован')
     }
 

@@ -19,6 +19,8 @@ export interface Actions {
   [ExceptionActionsTypes.CLEAR_ERROR] (
     { commit }: AugmentedActionContext,
     module: string): void
+  [ExceptionActionsTypes.CLEAR_ALL_ERROR] (
+    { commit }: AugmentedActionContext): void
 }
 
 export const actions: ActionTree<State, RootState> & Actions = {
@@ -28,5 +30,9 @@ export const actions: ActionTree<State, RootState> & Actions = {
 
   [ExceptionActionsTypes.CLEAR_ERROR] ({ commit }, module: string): void {
     commit(ExceptionMutationsTypes.CLEAR_ERROR, module)
+  },
+
+  [ExceptionActionsTypes.CLEAR_ALL_ERROR] ({ commit }): void {
+    commit(ExceptionMutationsTypes.CLEAR_ALL_ERROR, undefined)
   }
 }

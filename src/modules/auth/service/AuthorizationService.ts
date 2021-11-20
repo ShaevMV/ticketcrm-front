@@ -41,20 +41,15 @@ export class AuthorizationService {
   /**
    * Получить токен
    */
-  public getToken (isLoadPage: boolean): ITokenAuth | null {
-    const token = this.localTokenRepository.getToken()
-    if (this.isClearToken(isLoadPage, token?.isRemember ?? false)) {
-      this.localTokenRepository.clearToken()
-      return null
-    }
-
-    return token
+  public findToken (): ITokenAuth | null {
+    return this.localTokenRepository.getToken()
   }
 
   /**
    * Очистить токен локального хранилища
    */
-  public clearLocalToken (): void {
+  public clearToken (): void {
+    this.vuexTokenRepository.clearToken()
     this.localTokenRepository.clearToken()
   }
 

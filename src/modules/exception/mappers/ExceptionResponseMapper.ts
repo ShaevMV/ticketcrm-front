@@ -9,9 +9,6 @@ export class ExceptionResponseMapper {
       await error.graphQLErrors.forEach(function (value, index) {
         if (value.extensions !== undefined && value.extensions.validation !== undefined && value.path !== undefined) {
           for (const key in value.extensions.validation) {
-            console.log(value.path[index])
-            console.log(key)
-            console.log(value.extensions.validation[key][0])
             result.message = value.extensions.validation[key][0]
             result.field = key
             result.module = value.path[index] !== undefined ? value.path[index].toString() : ''

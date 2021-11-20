@@ -26,12 +26,19 @@ export class ExceptionService {
   }
 
   /**
-   * Очистить модуль от ошибок
+   * Очистить компонент от ошибок
    *
-   * @param module
+   * @param component
    */
-  public clearErrorByModule (module: string): void {
-    this.vuexExceptionRepository.clear(module)
+  public clearErrorByComponent (component: string): void {
+    this.vuexExceptionRepository.clear(component)
+  }
+
+  /**
+   * Очистить все компоненты от ошибок
+   */
+  public clearError () : void {
+    this.vuexExceptionRepository.clearAll()
   }
 
   /**
@@ -39,7 +46,7 @@ export class ExceptionService {
    *
    * @param component
    */
-  public isExistsByModule (component: string): boolean {
+  public isExistsByComponent (component: string): boolean {
     const findByModule = this.vuexExceptionRepository.findByModule(component)
     return findByModule !== null && isArray(findByModule) && findByModule.length > 0
   }

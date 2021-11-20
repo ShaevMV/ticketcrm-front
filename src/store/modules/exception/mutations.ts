@@ -6,6 +6,7 @@ import { ExceptionMutationsTypes } from '@/store/modules/exception/types'
 export type Mutations<S = State> = {
   [ExceptionMutationsTypes.SET_ERROR] (state: S, payload: IExceptionModule): void
   [ExceptionMutationsTypes.CLEAR_ERROR] (state: S, payload: string): void
+  [ExceptionMutationsTypes.CLEAR_ALL_ERROR] (state: S): void
 }
 
 export const mutations: MutationTree<State> & Mutations = {
@@ -18,5 +19,8 @@ export const mutations: MutationTree<State> & Mutations = {
         array.splice(index, 1)
       }
     })
+  },
+  [ExceptionMutationsTypes.CLEAR_ALL_ERROR] (state: State): void {
+    state.errors = []
   }
 }
