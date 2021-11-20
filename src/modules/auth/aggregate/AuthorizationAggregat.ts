@@ -25,13 +25,15 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
    */
   public static create (isLoadPage = true): Result<Authorization> {
     const tokenAuth = authorizationService.getToken(isLoadPage)
-    console.log(tokenAuth)
-    if (tokenAuth === null) {
+    if (tokenAuth === null ||
+      authorizationService.isClearToken(isLoadPage, tokenAuth?.isRemember ?? false)) {
+      authorizationService.clearLocalToken()
       return Result.fail<Authorization>('Пользователь не авторизован')
     }
 
-    authorizationService.setLocalToken(tokenAuth)
-    authorizationService.setVuexToken(tokenAuth)
+    if (!authorizationService.isAuth()) {
+      authorizationService.setVuexToken(tokenAuth)
+    }
 
     return Result.ok<Authorization>(new Authorization(AuthTokenEntity.create(tokenAuth).getResult()))
   }
@@ -54,24 +56,15 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
    */
   public static async auth (authorizationValue: Result<AuthorizationValue>): Promise<Result<Authorization>> {
     ExceptionAggregate.clear(LOGIN_UNAUTHORIZED_MODULE)
-    console.log(213)
     if (authorizationValue.isFailure) {
       ExceptionAggregate.create(new LoginBadRequestException(authorizationValue.error.toString()))
     }
     await authorizationService.auth(authorizationValue.getResult())
 
     if (ExceptionAggregate.isExists(LOGIN_UNAUTHORIZED_MODULE)) {
-      console.log(213)
       return Result.fail<Authorization>('Error')
     } else {
       return Authorization.create(false)
     }
-  }
-
-  /**
-   * Вывести токен
-   */
-  public getToken (): ITokenAuth {
-    return this.props.token
   }
 }

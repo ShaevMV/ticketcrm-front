@@ -3,7 +3,7 @@ import 'reflect-metadata'
 import { DOMAIN_TYPES } from '@/domain/inject/types'
 import { VuexStorage } from '@/domain/story/VuexStorage'
 import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
-import { ProfileActionsTypes, ProfileModuleTypes } from '@/store/modules/profile/types'
+import { ProfileActionsTypes, ProfileGettersTypes, ProfileModuleTypes } from '@/store/modules/profile/types'
 
 @injectable()
 export class VuexTokenRepository {
@@ -15,7 +15,25 @@ export class VuexTokenRepository {
     this.storage = storage
   }
 
+  /**
+   * Записать токин в хранилище
+   * @param tokenAuth
+   */
   setToken (tokenAuth: ITokenAuth): void {
-    this.storage.setValue<ITokenAuth>([ProfileModuleTypes.PROFILE_MODULE].toString(), [ProfileActionsTypes.UPDATE_TOKEN].toString(), tokenAuth)
+    this.storage.setValue<ITokenAuth>(
+      [ProfileModuleTypes.PROFILE_MODULE].toString(),
+      [ProfileActionsTypes.UPDATE_TOKEN].toString(),
+      tokenAuth
+    )
+  }
+
+  /**
+   * Вывести флаг того что пользователь авторизован
+   */
+  public isAuth (): boolean {
+    return this.storage.getValue<boolean>(
+      [ProfileModuleTypes.PROFILE_MODULE].toString(),
+      [ProfileGettersTypes.IS_AUTH].toString()
+    ) ?? false
   }
 }

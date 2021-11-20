@@ -26,7 +26,7 @@ export class AuthorizationService {
   /**
    * Авторизоваться
    *
-   * @param authorizationValue
+   * @param authorizationValue данные для авторизации пользователя
    */
   public async auth (authorizationValue: AuthorizationValue): Promise<void> {
     const tokenAuth = await this.authorizationAction.authSend(authorizationValue).then((r) => {
@@ -34,7 +34,7 @@ export class AuthorizationService {
     })
 
     if (tokenAuth !== null) {
-      this.localTokenRepository.setToken(tokenAuth)
+      this.setLocalToken(tokenAuth)
     }
   }
 
@@ -43,12 +43,19 @@ export class AuthorizationService {
    */
   public getToken (isLoadPage: boolean): ITokenAuth | null {
     const token = this.localTokenRepository.getToken()
-    if (isLoadPage && !token?.isRemember) {
+    if (this.isClearToken(isLoadPage, token?.isRemember ?? false)) {
       this.localTokenRepository.clearToken()
       return null
     }
 
     return token
+  }
+
+  /**
+   * Очистить токен локального хранилища
+   */
+  public clearLocalToken (): void {
+    this.localTokenRepository.clearToken()
   }
 
   /**
@@ -62,5 +69,24 @@ export class AuthorizationService {
 
   public setLocalToken (token: ITokenAuth): void {
     this.localTokenRepository.setToken(token)
+  }
+
+  /**
+   * проверить того что нужно удалить в хранилище
+   * (Страница была перегружена, не отмечен "запомни меня" при авторизации, в хранилище нет токена)
+   *
+   * @param isLoadPage флаг того что страница была загружена
+   * @param isRemember флаг того что стоит отметка "запомни меня"
+   * @private
+   */
+  public isClearToken (isLoadPage: boolean, isRemember: boolean): boolean {
+    return isLoadPage && !isRemember && !this.isAuth()
+  }
+
+  /**
+   * Проверка на наличие токена в хранилище
+   */
+  public isAuth (): boolean {
+    return this.vuexTokenRepository.isAuth()
   }
 }
