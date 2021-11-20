@@ -48,8 +48,10 @@ export class RegistrationActionGraphql implements IRegistrationAction<null | { u
         }).toPromise()
           .then((r) => {
             if (r.error !== undefined) {
-              ExceptionResponseMapper.map(r.error).then(error => {
-                ExceptionAggregate.create(error)
+              ExceptionResponseMapper.map(r.error).then(errors => {
+                errors.forEach(function (value) {
+                  ExceptionAggregate.create(value)
+                })
               })
             } else {
               resolve({
