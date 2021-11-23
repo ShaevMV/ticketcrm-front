@@ -1,31 +1,60 @@
 <template>
-  <div class="container">
-    <div class="form-group">
-      <label for="exampleInputEmail1">Email address</label>
-      <input type="email"
-             v-model="email"
-             class="form-control"
-             id="exampleInputEmail1"
-             aria-describedby="emailHelp"
-             placeholder="Enter email">
-      <div class="error">
-        <span class="html-error">{{ getMassage('auth', 'login') }}</span>
+  <div class="bs-docs-section" id="maincontent">
+    <div id="indexed">
+      <div class="container">
+        <a href="/" id="main-logo">
+          <img alt="Vue logo" src="../assets/logo.png">
+        </a>
+        <div class="centered">
+          <h1>Здравствуйте, дорогие друзья!</h1>
+          <p>Вы находитесь на странице, предназначенной для регистрации внесенных вами оргвзносов или
+            приобретения трансфера до фестиваля.<br>
+            Для доступа к вышеперечисленным функциям, пожалуйста, <a v-on:click="doRegistration">зарегистрируйтесь</a>
+            или войдите в свой профайл:</p>
+        </div>
+        <div id="logger">
+          <div class="inner">
+            <fieldset>
+              <div class="form-group">
+                <label for="login" class="col-lg-2 control-label">Логин:</label>
+                <input type="text"
+                       v-model="email"
+                       class="form-control"
+                       title="Login"
+                       id="login"
+                       placeholder="Логин">
+              </div>
+              <p class="error">{{ getMassage('auth', 'login') }}</p>
+              <div class="form-group">
+                <label for="login" class="col-lg-2 control-label">Пароль:</label>
+                <input type="password"
+                       v-model="password"
+                       class="form-control"
+                       title="password"
+                       id="password"
+                       placeholder="Пароль">
+              </div>
+              <div class="form-group">
+                <div class="form-check">
+                  <input type="checkbox" v-model="isRememberMe" class="form-check-input" id="exampleCheck1">
+                  <label class="form-check-label" for="exampleCheck1">Запомнить меня</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <button type="submit"
+                        class="btn btn-primary"
+                        v-on:click="auth"
+                        id="enter">Войти в учетную запись
+                </button>
+              </div>
+              <p class="error">{{ getMassage('auth', 'auth') }}</p>
+            </fieldset>
+          </div>
+          <a href="/login/?forgot=true">Забыли пароль?</a>
+          <p>Нет профайла? Зарегистрируйте его здесь <a href="/login">здесь</a>.</p>
+        </div>
       </div>
-      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
     </div>
-    <div class="form-group">
-      <label for="exampleInputPassword1">Password</label>
-      <input v-model="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-    </div>
-    <div class="form-check">
-      <input type="checkbox" v-model="isRememberMe" class="form-check-input" id="exampleCheck1">
-      <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>
-    <div class="error">
-      <span class="html-error">{{ getMassage('auth', 'auth') }}</span>
-    </div>
-    <button type="submit" v-on:click="auth" class="btn btn-primary">login</button>
-    <span class="link-info" v-on:click="doRegistration">Регистрация</span>
   </div>
 </template>
 

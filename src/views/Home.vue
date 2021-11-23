@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
+
     <login-form v-if="!isAuth && !isRegistration" @showRegistration="onShowRegistration"></login-form>
     <registration-form v-if="!isAuth && isRegistration" @showRegistration="onShowRegistration"></registration-form>
   </div>
