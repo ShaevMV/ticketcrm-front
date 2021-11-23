@@ -61,9 +61,13 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
       ExceptionAggregate.create(new LoginBadRequestException(authorizationValue.error.toString()))
     }
     await authorizationService.auth(authorizationValue.getResult())
+    console.log(321)
 
     if (ExceptionAggregate.isExists(LOGIN_UNAUTHORIZED_MODULE)) {
-      return Result.fail<Authorization>('Error')
+      console.log(321)
+      return new Promise<Result<Authorization>>((resolve) => {
+        resolve(Result.fail<Authorization>('Error'))
+      })
     } else {
       return Authorization.create(false)
     }

@@ -37,6 +37,8 @@ import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
 import { Authorization } from '@/modules/auth/aggregate/AuthorizationAggregat'
 import { mapGetters } from 'vuex'
 import { ExceptionGettersTypes, ExceptionModuleTypes } from '@/store/modules/exception/types'
+import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
+import { LOGIN_UNAUTHORIZED_MODULE } from '@/modules/auth/exeptions/LoginUnauthorizedException'
 
 @Options({
   name: 'LoginForm',
@@ -46,14 +48,18 @@ import { ExceptionGettersTypes, ExceptionModuleTypes } from '@/store/modules/exc
 })
 
 export default class LoginForm extends Vue {
-  email!: string
-  password!: string
-  isRememberMe!: boolean
+  email: string | null = null
+  password: null | string = null
+  isRememberMe = false
+
+  created (): void {
+    ExceptionAggregate.clear(LOGIN_UNAUTHORIZED_MODULE)
+  }
 
   auth (): void {
     const IValue: MutationAuthArgs = {
-      email: this.email,
-      password: this.password,
+      email: this.email ?? '',
+      password: this.password ?? '',
       isRememberMe: this.isRememberMe
     }
 

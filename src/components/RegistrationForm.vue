@@ -51,6 +51,8 @@ import { ExceptionGettersTypes, ExceptionModuleTypes } from '@/store/modules/exc
 import { MutationRegistrationArgs } from '@/graphql/graphql'
 import { Profile } from '@/modules/profile/aggregates/ProfileAggregate'
 import { Authorization } from '@/modules/auth/aggregate/AuthorizationAggregat'
+import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
+import { REGISTRATION_MODULE } from '@/modules/profile/exeptions/registration/RegistrationBadRequestException'
 
 @Options({
   name: 'RegistrationForm',
@@ -59,22 +61,26 @@ import { Authorization } from '@/modules/auth/aggregate/AuthorizationAggregat'
   })
 })
 
-export default class Registration extends Vue {
-  email!: string
-  name!: string
-  password!: string
-  passwordConfirmation!: string
+export default class RegistrationForm extends Vue {
+  email: null | string = null
+  name: null | string = null
+  password: null | string = null
+  passwordConfirmation: null | string = null
 
   doLogin (): void {
     this.$emit('showRegistration', false)
   }
 
+  created (): void {
+    ExceptionAggregate.clear(REGISTRATION_MODULE)
+  }
+
   userRegistration (): void {
     const value: MutationRegistrationArgs = {
-      email: this.email ?? null,
-      name: this.name ?? null,
-      password: this.password ?? null,
-      password_confirmation: this.passwordConfirmation ?? null
+      email: this.email ?? '',
+      name: this.name ?? '',
+      password: this.password ?? '',
+      password_confirmation: this.passwordConfirmation ?? ''
     }
 
     Profile.registration(value).then(token => {

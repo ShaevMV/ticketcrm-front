@@ -14,5 +14,7 @@ createApp(App)
   })
   .mount('#app')
 
+// записать токен
 Authorization.create()
+// очистить все ошибки
 ExceptionAggregate.allClear()
