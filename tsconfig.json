@@ -12,9 +12,13 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "emitDecoratorMetadata": true,
     "types": [
       "webpack-env",
-      "jest"
+      "reflect-metadata",
+      "jest",
+      "mocha",
+      "chai"
     ],
     "paths": {
       "@/*": [
