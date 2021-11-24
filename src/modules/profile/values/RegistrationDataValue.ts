@@ -44,22 +44,22 @@ export class RegistrationDataValue extends ValueObject<MutationRegistrationArgs>
    */
   private static validate (prop: MutationRegistrationArgs): boolean {
     let isOk = true
-    if (prop.email === null || !validator.isEmail(prop.email)) {
+    if (validator.isEmpty(prop.email) || !validator.isEmail(prop.email)) {
       ExceptionAggregate.create(RegistrationDataValue.addException('Логин должен быть email', REGISTRATION_BAD_REQUEST_LOGIN_FIELD))
       isOk = false
     }
 
-    if (prop.name === null || prop.name.length === 0) {
+    if (validator.isEmpty(prop.name)) {
       ExceptionAggregate.create(RegistrationDataValue.addException('Имя не должно быть пустым', REGISTRATION_BAD_REQUEST_NAME_FIELD))
       isOk = false
     }
 
-    if (prop.password === null) {
+    if (validator.isEmpty(prop.password)) {
       ExceptionAggregate.create(RegistrationDataValue.addException('Пароль не может быть пустым', REGISTRATION_BAD_REQUEST_PASSWORD_FIELD))
       isOk = false
     }
 
-    if (prop.password_confirmation === null) {
+    if (validator.isEmpty(prop.password_confirmation) || prop.password_confirmation !== prop.password) {
       ExceptionAggregate.create(RegistrationDataValue.addException('Пароль не совпадает', REGISTRATION_BAD_REQUEST_PASSWORD_CONFIRMATION_FIELD))
       isOk = false
     }

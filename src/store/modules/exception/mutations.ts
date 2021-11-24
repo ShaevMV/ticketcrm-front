@@ -14,11 +14,7 @@ export const mutations: MutationTree<State> & Mutations = {
     state.errors.push(payload)
   },
   [ExceptionMutationsTypes.CLEAR_ERROR] (state: State, payload: string): void {
-    state.errors.forEach(function callback (currentValue, index, array) {
-      if (currentValue.module === payload) {
-        array.splice(index, 1)
-      }
-    })
+    state.errors = state.errors.filter((v: IExceptionModule) => v.module !== payload)
   },
   [ExceptionMutationsTypes.CLEAR_ALL_ERROR] (state: State): void {
     state.errors = []

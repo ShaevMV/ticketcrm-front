@@ -1,45 +1,66 @@
 <template>
-  <div class="container">
-    <div class="form-group">
-      <label for="inputLogin">Email address</label>
-      <input type="email"
-             v-model="email"
-             class="form-control"
-             id="inputLogin"
-             placeholder="Enter email">
-      <div class="error">
-        <span class="html-error">{{ getMassage('registration', 'email') }}</span>
+  <div class="bs-docs-section">
+    <div class="container">
+      <div class="form-horizontal">
+        <div id="regz">
+          <fieldset>
+            <legend>Регистрация нового профайла</legend>
+            <div class="form-group " id="email">
+              <label for="inputemail" class="col-lg-4 control-label">E-mail:</label>
+              <div class="col-lg-9">
+                <input type="email"
+                       v-model="email"
+                       class="form-control"
+                       id="inputemail"
+                       placeholder="E-mail">
+              </div>
+            </div>
+            <p class="error">{{ getMassage('registration', 'email') }}</p>
+            <div class="form-group">
+              <label for="per_name" class="col-lg-4 control-label">Имя:</label>
+              <div class="col-lg-9">
+                <input type="text"
+                       class="form-control"
+                       id="per_name"
+                       placeholder="Имя"
+                       v-model="name">
+              </div>
+            </div>
+            <p class="error">{{ getMassage('registration', 'name') }}</p>
+            <div class="form-group">
+              <label for="new_password" class="col-lg-4 control-label">Пароль:</label>
+              <div class="col-lg-9">
+                <input type="password"
+                       v-model="password"
+                       class="form-control"
+                       id="new_password"
+                       placeholder="Пароль">
+              </div>
+            </div>
+            <p class="error">{{ getMassage('registration', 'password') }}</p>
+            <div class="form-group" id="password_checin">
+              <label for="password_reg" class="col-lg-4 control-label">Повторите пароль:</label>
+              <div class="col-lg-9">
+                <input type="password"
+                       v-model="passwordConfirmation"
+                       class="form-control"
+                       id="password_reg"
+                       placeholder="Повторите пароль">
+              </div>
+            </div>
+            <p class="error">{{ getMassage('registration', 'password_confirmation') }}</p>
+            <div class="form-group">
+              <button type="submit"
+                      class="btn btn-primary"
+                      v-on:click="userRegistration"
+                      id="enter_reg">Зарегистрировать новый профайл
+              </button>
+            </div>
+          </fieldset>
+        </div>
+        <p>Уже есть профайл? Авторизуйтесь <a href="javascript:void(0);" v-on:click="doLogin">здесь</a>.</p>
       </div>
     </div>
-    <div class="form-group">
-      <label for="inputName">Name</label>
-      <input type="text"
-             v-model="name"
-             class="form-control"
-             id="inputName"
-             placeholder="Your name">
-      <div class="error">
-        <span class="html-error">{{ getMassage('registration', 'name') }}</span>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="exampleInputPassword">Password</label>
-      <input v-model="password" type="password" class="form-control" id="exampleInputPassword" placeholder="Password">
-      <div class="error">
-        <span class="html-error">{{ getMassage('registration', 'password') }}</span>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="exampleInputPasswordConfirmation">Password confirmation</label>
-      <input v-model="passwordConfirmation" type="password" class="form-control" id="exampleInputPasswordConfirmation"
-             placeholder="password confirmation">
-      <div class="error">
-        <span class="html-error">{{ getMassage('registration', 'password_confirmation') }}</span>
-      </div>
-    </div>
-
-    <button type="submit" v-on:click="userRegistration" class="btn btn-primary">Registration</button>
-    <span class="link-info" v-on:click="doLogin">Авторизация</span>
   </div>
 </template>
 

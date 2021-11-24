@@ -9,7 +9,7 @@
           <h1>Здравствуйте, дорогие друзья!</h1>
           <p>Вы находитесь на странице, предназначенной для регистрации внесенных вами оргвзносов или
             приобретения трансфера до фестиваля.<br>
-            Для доступа к вышеперечисленным функциям, пожалуйста, <a v-on:click="doRegistration">зарегистрируйтесь</a>
+            Для доступа к вышеперечисленным функциям, пожалуйста, <a href="javascript:void(0);" v-on:click="doRegistration">зарегистрируйтесь</a>
             или войдите в свой профайл:</p>
         </div>
         <div id="logger">
@@ -40,6 +40,7 @@
                   <label class="form-check-label" for="exampleCheck1">Запомнить меня</label>
                 </div>
               </div>
+              <p class="error">{{ getMassage('auth', 'auth') }}</p>
               <div class="form-group">
                 <button type="submit"
                         class="btn btn-primary"
@@ -47,11 +48,10 @@
                         id="enter">Войти в учетную запись
                 </button>
               </div>
-              <p class="error">{{ getMassage('auth', 'auth') }}</p>
             </fieldset>
           </div>
           <a href="/login/?forgot=true">Забыли пароль?</a>
-          <p>Нет профайла? Зарегистрируйте его здесь <a href="/login">здесь</a>.</p>
+          <p>Нет профайла? Зарегистрируйте его здесь <a href="javascript:void(0);" v-on:click="doRegistration">здесь</a>.</p>
         </div>
       </div>
     </div>

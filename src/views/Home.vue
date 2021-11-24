@@ -1,6 +1,5 @@
 <template>
-  <div class="home">
-
+  <div>
     <login-form v-if="!isAuth && !isRegistration" @showRegistration="onShowRegistration"></login-form>
     <registration-form v-if="!isAuth && isRegistration" @showRegistration="onShowRegistration"></registration-form>
   </div>
