@@ -5,6 +5,7 @@ export enum ProfileModuleTypes {
 export enum ProfileActionsTypes {
   UPDATE_TOKEN = 'UPDATE_TOKEN',
   SET_USER_DATA = 'SET_USER_DATA',
+
 }
 
 export enum ProfileMutationsTypes {

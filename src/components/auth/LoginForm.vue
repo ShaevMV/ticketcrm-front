@@ -3,7 +3,7 @@
     <div id="indexed">
       <div class="container">
         <a href="/" id="main-logo">
-          <img alt="Vue logo" src="../assets/logo.png">
+          <img alt="Vue logo" src="../../assets/logo.png">
         </a>
         <div class="centered">
           <h1>Здравствуйте, дорогие друзья!</h1>
@@ -50,7 +50,7 @@
               </div>
             </fieldset>
           </div>
-          <a href="/login/?forgot=true">Забыли пароль?</a>
+          <a href="javascript:void(0);" v-on:click="doRecoveryPassword">Забыли пароль?</a>
           <p>Нет профайла? Зарегистрируйте его здесь <a href="javascript:void(0);" v-on:click="doRegistration">здесь</a>.</p>
         </div>
       </div>
@@ -67,7 +67,7 @@ import { Authorization } from '@/modules/auth/aggregate/AuthorizationAggregat'
 import { mapGetters } from 'vuex'
 import { ExceptionGettersTypes, ExceptionModuleTypes } from '@/store/modules/exception/types'
 import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
-import { LOGIN_UNAUTHORIZED_MODULE } from '@/modules/auth/exeptions/LoginUnauthorizedException'
+import { LOGIN_UNAUTHORIZED_COMPONENT } from '@/modules/auth/exeptions/LoginUnauthorizedException'
 
 @Options({
   name: 'LoginForm',
@@ -82,7 +82,7 @@ export default class LoginForm extends Vue {
   isRememberMe = false
 
   created (): void {
-    ExceptionAggregate.clear(LOGIN_UNAUTHORIZED_MODULE)
+    ExceptionAggregate.clear(LOGIN_UNAUTHORIZED_COMPONENT)
   }
 
   auth (): void {
@@ -96,7 +96,11 @@ export default class LoginForm extends Vue {
   }
 
   doRegistration (): void {
-    this.$emit('showRegistration', true)
+    this.$emit('showRegistration', 'registration')
+  }
+
+  doRecoveryPassword (): void {
+    this.$emit('showRegistration', 'recoveryPassword')
   }
 }
 </script>

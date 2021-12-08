@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
-import LoginForm from '@/components/LoginForm.vue'
+import LoginForm from '@/components/auth/LoginForm.vue'
 
 @Options({
   components: { LoginForm },

@@ -9,7 +9,7 @@ import { AuthorizationService } from '@/modules/auth/service/AuthorizationServic
 import { LoginBadRequestException } from '@/modules/auth/exeptions/LoginBadRequestException'
 import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
 import { AUTH_TYPES } from '@/modules/auth/inject/types'
-import { LOGIN_UNAUTHORIZED_MODULE } from '@/modules/auth/exeptions/LoginUnauthorizedException'
+import { LOGIN_UNAUTHORIZED_COMPONENT } from '@/modules/auth/exeptions/LoginUnauthorizedException'
 
 const authorizationService = domainContainer.get<AuthorizationService>(AUTH_TYPES.AuthorizationService)
 
@@ -56,13 +56,13 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
    * @param authorizationValue данные для авторизации
    */
   public static async auth (authorizationValue: Result<AuthorizationValue>): Promise<Result<Authorization>> {
-    ExceptionAggregate.clear(LOGIN_UNAUTHORIZED_MODULE)
+    ExceptionAggregate.clear(LOGIN_UNAUTHORIZED_COMPONENT)
     if (authorizationValue.isFailure) {
       ExceptionAggregate.create(new LoginBadRequestException(authorizationValue.error.toString()))
     }
     await authorizationService.auth(authorizationValue.getResult())
 
-    if (ExceptionAggregate.isExists(LOGIN_UNAUTHORIZED_MODULE)) {
+    if (ExceptionAggregate.isExists(LOGIN_UNAUTHORIZED_COMPONENT)) {
       return new Promise<Result<Authorization>>((resolve) => {
         resolve(Result.fail<Authorization>('Error'))
       })

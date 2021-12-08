@@ -73,7 +73,7 @@ import { MutationRegistrationArgs } from '@/graphql/graphql'
 import { Profile } from '@/modules/profile/aggregates/ProfileAggregate'
 import { Authorization } from '@/modules/auth/aggregate/AuthorizationAggregat'
 import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
-import { REGISTRATION_MODULE } from '@/modules/profile/exeptions/registration/RegistrationBadRequestException'
+import { REGISTRATION_COMPONENT } from '@/modules/profile/exeptions/registration/RegistrationBadRequestException'
 
 @Options({
   name: 'RegistrationForm',
@@ -89,11 +89,11 @@ export default class RegistrationForm extends Vue {
   passwordConfirmation: null | string = null
 
   doLogin (): void {
-    this.$emit('showRegistration', false)
+    this.$emit('showRegistration', 'login')
   }
 
   created (): void {
-    ExceptionAggregate.clear(REGISTRATION_MODULE)
+    ExceptionAggregate.clear(REGISTRATION_COMPONENT)
   }
 
   userRegistration (): void {
