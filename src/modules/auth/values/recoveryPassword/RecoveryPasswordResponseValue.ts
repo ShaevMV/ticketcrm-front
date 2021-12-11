@@ -14,4 +14,8 @@ export class RecoveryPasswordResponseValue extends ValueObject<IRecoveryPassword
   public get message (): string {
     return this.props.message
   }
+
+  public get isSuccess ():boolean {
+    return this.props.success
+  }
 }

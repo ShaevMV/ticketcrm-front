@@ -16,8 +16,16 @@
             </div>
           </div>
           <div class="form-group">
-            <button type="submit" class="btn btn-primary" id="enter_reg">Отправить новый пароль</button>
+            <button type="submit"
+                    class="btn btn-primary"
+                    id="enter_reg"
+                    v-bind:disabled="email === null"
+                    v-on:click="doRecoveryPassword">
+              Отправить новый пароль
+            </button>
           </div>
+          <p class="error">{{ getMassage('recoveryPassword', 'email') }}</p>
+          <p v-bind:class="{ error: !success }">{{ massage }}</p>
         </fieldset>
       </div>
     </div>
@@ -28,16 +36,34 @@
 import { Options, Vue } from 'vue-class-component'
 import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
 import { REGISTRATION_COMPONENT } from '@/modules/profile/exeptions/registration/RegistrationBadRequestException'
+import { Authorization } from '@/modules/auth/aggregate/AuthorizationAggregat'
+import { mapGetters } from 'vuex'
+import { ExceptionGettersTypes, ExceptionModuleTypes } from '@/store/modules/exception/types'
 
 @Options({
-  name: 'RegistrationForm'
+  name: 'RegistrationForm',
+  computed: mapGetters([ExceptionModuleTypes.EXCEPTION_MODULE].toString(), {
+    getMassage: [ExceptionGettersTypes.GET_MASSAGE].toString()
+  })
 })
 
 export default class RecoveryPassword extends Vue {
   email: null | string = null
+  success: null | boolean = null
+  massage: null | string = null
 
   created (): void {
     ExceptionAggregate.clear(REGISTRATION_COMPONENT)
+  }
+
+  doRecoveryPassword (): void {
+    if (this.email !== null) {
+      Authorization.recoveryPassword(this.email).then((r) => {
+        console.log(r)
+        this.success = r.isSuccess
+        this.massage = r.message
+      })
+    }
   }
 }
 </script>

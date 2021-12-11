@@ -2,8 +2,8 @@ import 'reflect-metadata'
 import { inject, injectable } from 'inversify'
 import { AUTH_TYPES } from '@/modules/auth/inject/types'
 import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
-import { RefreshActionGraphql } from '@/modules/auth/actions/RefreshActionGraphql'
-import { AuthorizationLocalRepository } from '@/modules/auth/repositories/AuthorizationLocalRepository'
+import { RefreshActionGraphql } from '@/modules/auth/actions/login/RefreshActionGraphql'
+import { AuthorizationLocalRepository } from '@/modules/auth/repositories/login/AuthorizationLocalRepository'
 
 @injectable()
 export class AuthorizationRefreshService {

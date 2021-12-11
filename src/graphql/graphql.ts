@@ -20,6 +20,8 @@ export type Mutation = {
   registration?: Maybe<UserDataForRegistration>;
   /** Перезапрос токина */
   tokenRefresh?: Maybe<Token>;
+  /** Восстановление пароля пользователя */
+  recoveryPassword?: Maybe<RecoveryPasswordResponse>;
 };
 
 
@@ -31,10 +33,15 @@ export type MutationAuthArgs = {
 
 
 export type MutationRegistrationArgs = {
-  email: Scalars['String'];
   name: Scalars['String'];
+  email: Scalars['String'];
   password: Scalars['String'];
   password_confirmation: Scalars['String'];
+};
+
+
+export type MutationRecoveryPasswordArgs = {
+  email: Scalars['String'];
 };
 
 export type Query = {
@@ -44,7 +51,7 @@ export type Query = {
 
 
 export type QueryUsersArgs = {
-  id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
 };
 
@@ -73,4 +80,13 @@ export type UserDataForRegistration = {
   __typename?: 'UserDataForRegistration';
   token?: Maybe<Token>;
   user?: Maybe<UserDataForAuthType>;
+};
+
+/** Ответ после запроса восстановления пароля пользователя */
+export type RecoveryPasswordResponse = {
+  __typename?: 'recoveryPasswordResponse';
+  /** Успех отправки письма на почту */
+  success?: Maybe<Scalars['Boolean']>;
+  /** Пользовательское сообщение */
+  userMessage?: Maybe<Scalars['String']>;
 };

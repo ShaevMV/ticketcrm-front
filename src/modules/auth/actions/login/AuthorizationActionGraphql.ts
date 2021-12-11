@@ -2,10 +2,10 @@ import { inject, injectable } from 'inversify'
 import 'reflect-metadata'
 import { DOMAIN_TYPES } from '@/domain/inject/types'
 import { ApolloGraphql } from '@/domain/apiClient/ApolloGraphql'
-import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
+import { AuthorizationValue } from '@/modules/auth/values/login/AuthorizationValue'
 import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
-import { IAuthorizationAction } from '@/modules/auth/actions/IAuthorizationAction'
-import { LoginUnauthorizedException } from '@/modules/auth/exeptions/LoginUnauthorizedException'
+import { IAuthorizationAction } from '@/modules/auth/actions/login/IAuthorizationAction'
+import { LoginUnauthorizedException } from '@/modules/auth/exeptions/login/LoginUnauthorizedException'
 import { TokenAuthMapper } from '@/modules/auth/mappers/TokenAuthMapper'
 import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
 
@@ -29,7 +29,7 @@ export class AuthorizationActionGraphql implements IAuthorizationAction<ITokenAu
           }
       }
     `
-    return new Promise<ITokenAuth>((resolve, reject) => {
+    return new Promise<ITokenAuth>((resolve) => {
       this.actionClient.getClient().then(r => {
         r.mutation(MUTATION, {
           email: value.args.email,

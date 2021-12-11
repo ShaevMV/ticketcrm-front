@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify'
 import { createClient } from '@urql/core'
 import { Client, dedupExchange, cacheExchange, fetchExchange } from 'urql'
 import { AUTH_TYPES } from '@/modules/auth/inject/types'
-import { AuthorizationRefreshService } from '@/modules/auth/service/AuthorizationRefreshService'
+import { AuthorizationRefreshService } from '@/modules/auth/service/login/AuthorizationRefreshService'
 
 @injectable()
 export class ApolloGraphql {

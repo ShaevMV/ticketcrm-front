@@ -62,12 +62,12 @@
 import 'reflect-metadata'
 import { Options, Vue } from 'vue-class-component'
 import { MutationAuthArgs } from '@/graphql/graphql'
-import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
+import { AuthorizationValue } from '@/modules/auth/values/login/AuthorizationValue'
 import { Authorization } from '@/modules/auth/aggregate/AuthorizationAggregat'
 import { mapGetters } from 'vuex'
 import { ExceptionGettersTypes, ExceptionModuleTypes } from '@/store/modules/exception/types'
 import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
-import { LOGIN_UNAUTHORIZED_COMPONENT } from '@/modules/auth/exeptions/LoginUnauthorizedException'
+import { LOGIN_UNAUTHORIZED_COMPONENT } from '@/modules/auth/exeptions/login/LoginUnauthorizedException'
 
 @Options({
   name: 'LoginForm',

@@ -10,7 +10,6 @@ import { domainContainer } from '@/modules/profile/inject/inversify.config'
 import { RegistrationService } from '@/modules/profile/services/RegistrationService'
 import { PROFILE_TYPES } from '@/modules/profile/inject/types'
 import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
-import { RECOVERY_PASSWORD_COMPONENT } from '@/modules/profile/exeptions/recoveryPassword/RecoveryPasswordBadRequestException'
 
 const registrationService = domainContainer.get<RegistrationService>(PROFILE_TYPES.RegistrationService)
 
@@ -32,9 +31,5 @@ export class Profile extends AggregateRoot<UserDataEntity> {
     }
 
     return await registrationService.registrationUser(registrationDataValue.getResult())
-  }
-
-  public static async recoveryPassword (email: string): Promise<void> {
-    ExceptionAggregate.clear(RECOVERY_PASSWORD_COMPONENT)
   }
 }

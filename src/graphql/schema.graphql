@@ -15,6 +15,11 @@ type Mutation {
         "Пароль пользователя для авторизации"
         password: String!
     ): Token
+    "Восстановление пароля пользователя"
+    recoveryPassword(
+        "Email пользователя"
+        email: String!
+    ): recoveryPasswordResponse
     "Регистрация нового пользователя"
     registration(
         "Email пользователя"
@@ -35,7 +40,7 @@ type Query {
         "email пользователя"
         email: String,
         "UUid пользователя"
-        id: Int
+        id: String
     ): [UserDataForAuthType]
 }
 
@@ -61,4 +66,12 @@ type UserDataForAuthType {
 type UserDataForRegistration {
     token: Token
     user: UserDataForAuthType
+}
+
+"Ответ после запроса восстановления пароля пользователя"
+type recoveryPasswordResponse {
+    "Успех отправки письма на почту"
+    success: Boolean
+    "Пользовательское сообщение"
+    userMessage: String
 }

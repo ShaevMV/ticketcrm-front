@@ -3,15 +3,23 @@ import 'reflect-metadata'
 import AggregateRoot from 'types-ddd/dist/core/aggregate-root'
 import { AuthTokenEntity, ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
 import Result from 'types-ddd/dist/core/result'
-import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
+import { AuthorizationValue } from '@/modules/auth/values/login/AuthorizationValue'
 import { domainContainer } from '@/modules/auth/inject/inversify.config'
-import { AuthorizationService } from '@/modules/auth/service/AuthorizationService'
-import { LoginBadRequestException } from '@/modules/auth/exeptions/LoginBadRequestException'
+import { AuthorizationService } from '@/modules/auth/service/login/AuthorizationService'
+import { LoginBadRequestException } from '@/modules/auth/exeptions/login/LoginBadRequestException'
 import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
 import { AUTH_TYPES } from '@/modules/auth/inject/types'
-import { LOGIN_UNAUTHORIZED_COMPONENT } from '@/modules/auth/exeptions/LoginUnauthorizedException'
+import { LOGIN_UNAUTHORIZED_COMPONENT } from '@/modules/auth/exeptions/login/LoginUnauthorizedException'
+import {
+  RECOVERY_PASSWORD_COMPONENT,
+  RecoveryPasswordBadRequestException
+} from '@/modules/auth/exeptions/recoveryPassword/RecoveryPasswordBadRequestException'
+import { RecoveryPasswordEmailValue } from '@/modules/auth/values/recoveryPassword/RecoveryPasswordEmailValue'
+import { RecoveryPasswordService } from '@/modules/auth/service/recoveryPassword/RecoveryPasswordService'
+import { RecoveryPasswordResponseValue } from '@/modules/auth/values/recoveryPassword/RecoveryPasswordResponseValue'
 
 const authorizationService = domainContainer.get<AuthorizationService>(AUTH_TYPES.AuthorizationService)
+const recoveryPasswordService = domainContainer.get<RecoveryPasswordService>(AUTH_TYPES.RecoveryPasswordService)
 
 @injectable()
 export class Authorization extends AggregateRoot<AuthTokenEntity> {
@@ -60,14 +68,33 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
     if (authorizationValue.isFailure) {
       ExceptionAggregate.create(new LoginBadRequestException(authorizationValue.error.toString()))
     }
-    await authorizationService.auth(authorizationValue.getResult())
+    const token = await authorizationService.auth(authorizationValue.getResult())
 
     if (ExceptionAggregate.isExists(LOGIN_UNAUTHORIZED_COMPONENT)) {
       return new Promise<Result<Authorization>>((resolve) => {
         resolve(Result.fail<Authorization>('Error'))
       })
-    } else {
-      return Authorization.create(false)
     }
+    authorizationService.setLocalToken(token)
+
+    return Authorization.create(false)
+  }
+
+  /**
+   * Восстановление пароля
+   *
+   * @param email
+   */
+  public static async recoveryPassword (email: string): Promise<RecoveryPasswordResponseValue> {
+    ExceptionAggregate.clear(RECOVERY_PASSWORD_COMPONENT)
+    const emailValue = RecoveryPasswordEmailValue.creat({
+      email: email
+    })
+
+    if (emailValue.isFailure) {
+      ExceptionAggregate.create(new RecoveryPasswordBadRequestException(emailValue.error.toString()))
+    }
+
+    return recoveryPasswordService.send(emailValue.getResult())
   }
 }

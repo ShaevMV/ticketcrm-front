@@ -1,8 +1,8 @@
 import { injectable } from 'inversify'
 import 'reflect-metadata'
-import { IRefreshActionGraphql } from '@/modules/auth/actions/IRefreshActionGraphql'
+import { IRefreshActionGraphql } from '@/modules/auth/actions/login/IRefreshActionGraphql'
 import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
-import { LoginUnauthorizedException } from '@/modules/auth/exeptions/LoginUnauthorizedException'
+import { LoginUnauthorizedException } from '@/modules/auth/exeptions/login/LoginUnauthorizedException'
 import { TokenAuthMapper } from '@/modules/auth/mappers/TokenAuthMapper'
 import { ApolloGraphqlForRefresh } from '@/domain/apiClient/ApolloGraphqlForRefresh'
 

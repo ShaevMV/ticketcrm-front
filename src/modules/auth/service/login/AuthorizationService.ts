@@ -1,11 +1,13 @@
 import 'reflect-metadata'
 import { inject, injectable } from 'inversify'
-import { AuthorizationValue } from '@/modules/auth/values/AuthorizationValue'
-import { AuthorizationActionGraphql } from '@/modules/auth/actions/AuthorizationActionGraphql'
+import { AuthorizationValue } from '@/modules/auth/values/login/AuthorizationValue'
+import { AuthorizationActionGraphql } from '@/modules/auth/actions/login/AuthorizationActionGraphql'
 import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
-import { AuthorizationLocalRepository } from '@/modules/auth/repositories/AuthorizationLocalRepository'
-import { VuexTokenRepository } from '@/modules/auth/repositories/VuexTokenRepository'
+import { AuthorizationLocalRepository } from '@/modules/auth/repositories/login/AuthorizationLocalRepository'
+import { VuexTokenRepository } from '@/modules/auth/repositories/token/VuexTokenRepository'
 import { AUTH_TYPES } from '@/modules/auth/inject/types'
+import { LoginUnauthorizedException } from "@/modules/auth/exeptions/login/LoginUnauthorizedException";
+import { ExceptionAggregate } from "@/modules/exception/aggregates/ExceptionAggregate";
 
 @injectable()
 export class AuthorizationService {
@@ -28,14 +30,16 @@ export class AuthorizationService {
    *
    * @param authorizationValue данные для авторизации пользователя
    */
-  public async auth (authorizationValue: AuthorizationValue): Promise<void> {
+  public async auth (authorizationValue: AuthorizationValue): Promise<ITokenAuth> {
     const tokenAuth = await this.authorizationAction.authSend(authorizationValue).then((r) => {
       return r
     })
 
-    if (tokenAuth !== null) {
-      this.setLocalToken(tokenAuth)
+    if (tokenAuth === null) {
+      ExceptionAggregate.create(new LoginUnauthorizedException('Не получен токен'))
     }
+
+    return tokenAuth
   }
 
   /**
