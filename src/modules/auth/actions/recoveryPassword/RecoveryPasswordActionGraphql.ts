@@ -9,6 +9,7 @@ import {
 } from '@/modules/auth/values/recoveryPassword/RecoveryPasswordResponseValue'
 import { RecoveryPasswordException } from '@/modules/auth/exeptions/recoveryPassword/RecoveryPasswordException'
 import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
+import { PasswordResetValue } from '@/modules/auth/values/recoveryPassword/PasswordResetValue'
 
 @injectable()
 export class RecoveryPasswordActionGraphql implements IRecoveryPasswordAction<IRecoveryPasswordResponse> {
@@ -20,7 +21,7 @@ export class RecoveryPasswordActionGraphql implements IRecoveryPasswordAction<IR
     this.actionClient = actionClient
   }
 
-  recoveryPassword (email: string): Promise<RecoveryPasswordResponseValue> {
+  sendLinkForRecoveryPassword (email: string): Promise<RecoveryPasswordResponseValue> {
     const MUTATION = `
       mutation RecoveryPassword($email: String!){
           recoveryPassword(email: $email) {
@@ -41,6 +42,39 @@ export class RecoveryPasswordActionGraphql implements IRecoveryPasswordAction<IR
               resolve(RecoveryPasswordResponseValue.create({
                 success: r.data.recoveryPassword.success,
                 message: r.data.recoveryPassword.userMessage
+              }).getResult())
+            }
+          })
+      })
+    })
+  }
+
+  sendPasswordReset (passwordResetValue: PasswordResetValue): Promise<RecoveryPasswordResponseValue> {
+    const MUTATION = `
+      mutation PasswordReset($email: String!, $token: String!, $password: String!, $password_confirmation: String!){
+          passwordReset(email: $email, token: $token, password: $password, password_confirmation: $password_confirmation) {
+            success
+            userMessage
+          }
+      }
+    `
+    return new Promise<RecoveryPasswordResponseValue>((resolve) => {
+      this.actionClient.getClient().then(r => {
+        r.mutation(MUTATION, {
+          email: passwordResetValue.args.email,
+          token: passwordResetValue.args.token,
+          password: passwordResetValue.args.password,
+          password_confirmation: passwordResetValue.args.password_confirmation
+        }).toPromise()
+          .then((r) => {
+            if (r.error !== undefined) {
+              const error = new RecoveryPasswordException(r.error.message)
+              error.field = 'message'
+              ExceptionAggregate.create(error)
+            } else {
+              resolve(RecoveryPasswordResponseValue.create({
+                success: r.data.passwordReset.success,
+                message: r.data.passwordReset.userMessage
               }).getResult())
             }
           })

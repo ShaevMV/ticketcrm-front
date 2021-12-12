@@ -7,18 +7,22 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <h3 id="type"><a href="/">Страница регистраций Solar Systo Togathering 2021</a></h3>
+        <h3 id="type">
+          <a href="javascript:void(0);" v-on:click="goInHomePage">
+            Страница регистраций Solar Systo Togathering 2021
+          </a>
+        </h3>
       </div>
     </div>
   </div>
 </template>
 
-<script type="ts">
-export default {
-  name: 'Navbar'
+<script lang="ts">
+import { Vue } from 'vue-class-component'
+
+export default class Navbar extends Vue {
+  goInHomePage (): void {
+    this.$router.push('/')
+  }
 }
 </script>
-
-<style scoped>
-
-</style>

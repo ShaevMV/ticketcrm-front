@@ -13,12 +13,12 @@ import LoginForm from '@/components/auth/LoginForm.vue'
 import { mapGetters } from 'vuex'
 import { ProfileGettersTypes, ProfileModuleTypes } from '@/store/modules/profile/types'
 import RegistrationForm from '@/components/auth/RegistrationForm.vue'
-import RecoveryPassword from '@/components/auth/RecoveryPassword.vue'
+import RecoveryPasswordForm from '@/components/auth/RecoveryPasswordForm.vue'
 
 @Options({
   name: 'Home',
   components: {
-    RecoveryPassword,
+    RecoveryPassword: RecoveryPasswordForm,
     RegistrationForm,
     LoginForm,
     HelloWorld

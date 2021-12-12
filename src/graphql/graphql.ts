@@ -22,6 +22,8 @@ export type Mutation = {
   tokenRefresh?: Maybe<Token>;
   /** Восстановление пароля пользователя */
   recoveryPassword?: Maybe<RecoveryPasswordResponse>;
+  /** Заменить пароль у пользователя */
+  passwordReset?: Maybe<RecoveryPasswordResponse>;
 };
 
 
@@ -42,6 +44,14 @@ export type MutationRegistrationArgs = {
 
 export type MutationRecoveryPasswordArgs = {
   email: Scalars['String'];
+};
+
+
+export type MutationPasswordResetArgs = {
+  token: Scalars['String'];
+  email: Scalars['String'];
+  password: Scalars['String'];
+  password_confirmation: Scalars['String'];
 };
 
 export type Query = {

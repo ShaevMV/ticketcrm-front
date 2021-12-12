@@ -4,6 +4,7 @@ import { AUTH_TYPES } from '@/modules/auth/inject/types'
 import { RecoveryPasswordActionGraphql } from '@/modules/auth/actions/recoveryPassword/RecoveryPasswordActionGraphql'
 import { RecoveryPasswordEmailValue } from '@/modules/auth/values/recoveryPassword/RecoveryPasswordEmailValue'
 import { RecoveryPasswordResponseValue } from '@/modules/auth/values/recoveryPassword/RecoveryPasswordResponseValue'
+import { PasswordResetValue } from '@/modules/auth/values/recoveryPassword/PasswordResetValue'
 
 @injectable()
 export class RecoveryPasswordService {
@@ -16,6 +17,10 @@ export class RecoveryPasswordService {
   }
 
   public async send (recoveryPasswordEmailValue: RecoveryPasswordEmailValue): Promise<RecoveryPasswordResponseValue> {
-    return this.recoveryPasswordAction.recoveryPassword(recoveryPasswordEmailValue.email)
+    return this.recoveryPasswordAction.sendLinkForRecoveryPassword(recoveryPasswordEmailValue.email)
+  }
+
+  public async sendPasswordReset (passwordResetValue: PasswordResetValue): Promise<RecoveryPasswordResponseValue> {
+    return this.recoveryPasswordAction.sendPasswordReset(passwordResetValue)
   }
 }

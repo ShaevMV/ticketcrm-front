@@ -41,13 +41,13 @@ import { mapGetters } from 'vuex'
 import { ExceptionGettersTypes, ExceptionModuleTypes } from '@/store/modules/exception/types'
 
 @Options({
-  name: 'RegistrationForm',
+  name: 'RecoveryPasswordForm',
   computed: mapGetters([ExceptionModuleTypes.EXCEPTION_MODULE].toString(), {
     getMassage: [ExceptionGettersTypes.GET_MASSAGE].toString()
   })
 })
 
-export default class RecoveryPassword extends Vue {
+export default class RecoveryPasswordForm extends Vue {
   email: null | string = null
   success: null | boolean = null
   massage: null | string = null
@@ -57,9 +57,9 @@ export default class RecoveryPassword extends Vue {
   }
 
   doRecoveryPassword (): void {
+    ExceptionAggregate.clear(REGISTRATION_COMPONENT)
     if (this.email !== null) {
-      Authorization.recoveryPassword(this.email).then((r) => {
-        console.log(r)
+      Authorization.sendLinkForRecoveryPassword(this.email).then((r) => {
         this.success = r.isSuccess
         this.massage = r.message
       })

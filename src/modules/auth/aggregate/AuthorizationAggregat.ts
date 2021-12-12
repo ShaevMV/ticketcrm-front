@@ -17,6 +17,8 @@ import {
 import { RecoveryPasswordEmailValue } from '@/modules/auth/values/recoveryPassword/RecoveryPasswordEmailValue'
 import { RecoveryPasswordService } from '@/modules/auth/service/recoveryPassword/RecoveryPasswordService'
 import { RecoveryPasswordResponseValue } from '@/modules/auth/values/recoveryPassword/RecoveryPasswordResponseValue'
+import { MutationPasswordResetArgs } from '@/graphql/graphql'
+import { PasswordResetValue } from '@/modules/auth/values/recoveryPassword/PasswordResetValue'
 
 const authorizationService = domainContainer.get<AuthorizationService>(AUTH_TYPES.AuthorizationService)
 const recoveryPasswordService = domainContainer.get<RecoveryPasswordService>(AUTH_TYPES.RecoveryPasswordService)
@@ -81,11 +83,11 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
   }
 
   /**
-   * Восстановление пароля
+   * Отправить ссылку на восстановление пароля
    *
-   * @param email
+   * @param email емайл пользователя
    */
-  public static async recoveryPassword (email: string): Promise<RecoveryPasswordResponseValue> {
+  public static async sendLinkForRecoveryPassword (email: string): Promise<RecoveryPasswordResponseValue> {
     ExceptionAggregate.clear(RECOVERY_PASSWORD_COMPONENT)
     const emailValue = RecoveryPasswordEmailValue.creat({
       email: email
@@ -96,5 +98,14 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
     }
 
     return recoveryPasswordService.send(emailValue.getResult())
+  }
+
+  public static async sendNewPassword (value: MutationPasswordResetArgs): Promise<RecoveryPasswordResponseValue | void> {
+    const passwordResetValue = PasswordResetValue.create(value)
+    if (passwordResetValue.isFailure) {
+      return
+    }
+
+    return recoveryPasswordService.sendPasswordReset(passwordResetValue.getResult())
   }
 }

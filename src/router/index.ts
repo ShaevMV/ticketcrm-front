@@ -1,11 +1,18 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
+import RecoveryPassword from '@/views/RecoveryPassword.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/recoveryPassword/:token',
+    name: 'RecoveryPassword',
+    component: RecoveryPassword,
+    props: true
   },
   {
     path: '/about',
