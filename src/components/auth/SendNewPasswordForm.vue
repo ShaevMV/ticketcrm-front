@@ -97,7 +97,6 @@ export default class SendNewPasswordForm extends Vue {
       password_confirmation: this.passwordConfirmation ?? '',
       token: this.token
     }).then((r) => {
-      console.log(r)
       if (r !== undefined) {
         this.success = r.isSuccess
         this.massage = r.message
