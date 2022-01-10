@@ -9,7 +9,8 @@
           <h1>Здравствуйте, дорогие друзья!</h1>
           <p>Вы находитесь на странице, предназначенной для регистрации внесенных вами оргвзносов или
             приобретения трансфера до фестиваля.<br>
-            Для доступа к вышеперечисленным функциям, пожалуйста, <a href="javascript:void(0);" v-on:click="doRegistration">зарегистрируйтесь</a>
+            Для доступа к вышеперечисленным функциям, пожалуйста, <a href="javascript:void(0);"
+                                                                     v-on:click="doRegistration">зарегистрируйтесь</a>
             или войдите в свой профайл:</p>
         </div>
         <div id="logger">
@@ -51,7 +52,8 @@
             </fieldset>
           </div>
           <a href="javascript:void(0);" v-on:click="doRecoveryPassword">Забыли пароль?</a>
-          <p>Нет профайла? Зарегистрируйте его здесь <a href="javascript:void(0);" v-on:click="doRegistration">здесь</a>.</p>
+          <p>Нет профайла? Зарегистрируйте его здесь <a href="javascript:void(0);" v-on:click="doRegistration">здесь</a>.
+          </p>
         </div>
       </div>
     </div>
@@ -68,6 +70,7 @@ import { mapGetters } from 'vuex'
 import { ExceptionGettersTypes, ExceptionModuleTypes } from '@/store/modules/exception/types'
 import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
 import { LOGIN_UNAUTHORIZED_COMPONENT } from '@/modules/auth/exeptions/login/LoginUnauthorizedException'
+import { Profile } from '@/modules/profile/aggregates/ProfileAggregate'
 
 @Options({
   name: 'LoginForm',
@@ -92,7 +95,11 @@ export default class LoginForm extends Vue {
       isRememberMe: this.isRememberMe
     }
 
-    Authorization.auth(AuthorizationValue.create(IValue))
+    Authorization.auth(AuthorizationValue.create(IValue)).then(userData => {
+      if (userData !== null) {
+        Profile.setProfile(userData)
+      }
+    })
   }
 
   doRegistration (): void {

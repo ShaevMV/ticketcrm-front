@@ -8,6 +8,7 @@ import { VuexTokenRepository } from '@/modules/auth/repositories/token/VuexToken
 import { AUTH_TYPES } from '@/modules/auth/inject/types'
 import { LoginUnauthorizedException } from '@/modules/auth/exeptions/login/LoginUnauthorizedException'
 import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
+import { IUserData } from '@/modules/profile/entitys/UserDataEntity'
 
 @injectable()
 export class AuthorizationService {
@@ -30,12 +31,12 @@ export class AuthorizationService {
    *
    * @param authorizationValue данные для авторизации пользователя
    */
-  public async auth (authorizationValue: AuthorizationValue): Promise<ITokenAuth | null> {
+  public async auth (authorizationValue: AuthorizationValue): Promise<{ user: IUserData; token: ITokenAuth } | null> {
     const tokenAuth = await this.authorizationAction.authSend(authorizationValue).then((r) => {
-      return r !== null ? r.token : null
+      return r
     })
 
-    if (tokenAuth === null) {
+    if (tokenAuth === null || tokenAuth.token === null) {
       ExceptionAggregate.create(new LoginUnauthorizedException('Не получен токен'))
     }
 

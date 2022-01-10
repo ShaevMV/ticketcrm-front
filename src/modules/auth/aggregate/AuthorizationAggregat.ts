@@ -19,6 +19,7 @@ import { RecoveryPasswordService } from '@/modules/auth/service/recoveryPassword
 import { RecoveryPasswordResponseValue } from '@/modules/auth/values/recoveryPassword/RecoveryPasswordResponseValue'
 import { MutationPasswordResetArgs } from '@/graphql/graphql'
 import { PasswordResetValue } from '@/modules/auth/values/recoveryPassword/PasswordResetValue'
+import { IUserData } from '@/modules/profile/entitys/UserDataEntity'
 
 const authorizationService = domainContainer.get<AuthorizationService>(AUTH_TYPES.AuthorizationService)
 const recoveryPasswordService = domainContainer.get<RecoveryPasswordService>(AUTH_TYPES.RecoveryPasswordService)
@@ -65,21 +66,20 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
    *
    * @param authorizationValue данные для авторизации
    */
-  public static async auth (authorizationValue: Result<AuthorizationValue>): Promise<Result<Authorization>> {
+  public static async auth (authorizationValue: Result<AuthorizationValue>): Promise<IUserData | null> {
     ExceptionAggregate.clear(LOGIN_UNAUTHORIZED_COMPONENT)
     if (authorizationValue.isFailure) {
       ExceptionAggregate.create(new LoginBadRequestException(authorizationValue.error.toString()))
     }
     const token = await authorizationService.auth(authorizationValue.getResult())
 
-    if (ExceptionAggregate.isExists(LOGIN_UNAUTHORIZED_COMPONENT) || token === null) {
-      return new Promise<Result<Authorization>>((resolve) => {
-        resolve(Result.fail<Authorization>('Error'))
-      })
-    }
-    authorizationService.setLocalToken(token)
+    if (!ExceptionAggregate.isExists(LOGIN_UNAUTHORIZED_COMPONENT) && token !== null) {
+      authorizationService.setLocalToken(token.token)
+      Authorization.create(false)
 
-    return Authorization.create(false)
+      return token.user
+    }
+    return null
   }
 
   /**

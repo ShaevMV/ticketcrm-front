@@ -5,6 +5,7 @@ import { VuexUserDataRepository } from '@/modules/profile/repositories/VuexUserD
 
 const PROFILE_TYPES = {
   RegistrationService: Symbol.for('RegistrationService'),
+  ProfileService: Symbol.for('ProfileService'),
   Profile: Symbol.for('Profile'),
   RegistrationActionGraphql: Symbol.for('RegistrationActionGraphql'),
   VuexUserDataRepository: Symbol.for('VuexUserDataRepository')
