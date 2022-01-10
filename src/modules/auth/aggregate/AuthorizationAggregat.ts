@@ -72,7 +72,7 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
     }
     const token = await authorizationService.auth(authorizationValue.getResult())
 
-    if (ExceptionAggregate.isExists(LOGIN_UNAUTHORIZED_COMPONENT)) {
+    if (ExceptionAggregate.isExists(LOGIN_UNAUTHORIZED_COMPONENT) || token === null) {
       return new Promise<Result<Authorization>>((resolve) => {
         resolve(Result.fail<Authorization>('Error'))
       })

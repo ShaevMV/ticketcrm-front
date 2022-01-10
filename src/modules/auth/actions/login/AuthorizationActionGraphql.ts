@@ -8,9 +8,11 @@ import { IAuthorizationAction } from '@/modules/auth/actions/login/IAuthorizatio
 import { LoginUnauthorizedException } from '@/modules/auth/exeptions/login/LoginUnauthorizedException'
 import { TokenAuthMapper } from '@/modules/auth/mappers/TokenAuthMapper'
 import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
+import { IUserData } from "@/modules/profile/entitys/UserDataEntity";
+import { ProfileDataMapper } from "@/modules/profile/mappers/ProfileDataMapper";
 
 @injectable()
-export class AuthorizationActionGraphql implements IAuthorizationAction<ITokenAuth | null> {
+export class AuthorizationActionGraphql implements IAuthorizationAction<{ user: IUserData; token: ITokenAuth } | null> {
   private actionClient: ApolloGraphql
 
   public constructor (
@@ -19,17 +21,24 @@ export class AuthorizationActionGraphql implements IAuthorizationAction<ITokenAu
     this.actionClient = actionClient
   }
 
-  async authSend (value: AuthorizationValue): Promise<ITokenAuth> {
+  async authSend (value: AuthorizationValue): Promise<{ user: IUserData; token: ITokenAuth } | null> {
     const MUTATION = `
       mutation Auth($email: String!, $password: String!){
           auth(email: $email, password: $password) {
-            accessToken
-            tokenType
-            expiresIn
+            token {
+              accessToken
+              tokenType
+              expiresIn
+            }
+            user {
+              email
+              id
+              name
+            }
           }
       }
     `
-    return new Promise<ITokenAuth>((resolve) => {
+    return new Promise<{ user: IUserData; token: ITokenAuth } | null>((resolve) => {
       this.actionClient.getClient().then(r => {
         r.mutation(MUTATION, {
           email: value.args.email,
@@ -39,7 +48,10 @@ export class AuthorizationActionGraphql implements IAuthorizationAction<ITokenAu
             if (r.error !== undefined) {
               ExceptionAggregate.create(new LoginUnauthorizedException(r.error.message))
             } else {
-              resolve(TokenAuthMapper.map(r.data.auth, value.args.isRememberMe ?? false))
+              resolve({
+                token: TokenAuthMapper.map(r.data.auth.token, value.args.isRememberMe ?? false),
+                user: ProfileDataMapper.map(r.data.auth.user)
+              })
             }
           })
       })

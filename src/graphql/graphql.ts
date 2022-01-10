@@ -1,4 +1,3 @@
-import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
@@ -15,9 +14,9 @@ export type Scalars = {
 export type Mutation = {
   __typename?: 'Mutation';
   /** Авторизация пользователя */
-  auth?: Maybe<Token>;
+  auth?: Maybe<UserData>;
   /** Регистрация нового пользователя */
-  registration?: Maybe<UserDataForRegistration>;
+  registration?: Maybe<UserData>;
   /** Перезапрос токина */
   tokenRefresh?: Maybe<Token>;
   /** Восстановление пароля пользователя */
@@ -76,6 +75,13 @@ export type Token = {
   expiresIn?: Maybe<Scalars['Int']>;
 };
 
+/** Данные пользователя после регистрации */
+export type UserData = {
+  __typename?: 'UserData';
+  token?: Maybe<Token>;
+  user?: Maybe<UserDataForAuthType>;
+};
+
 /** Данные пользователя */
 export type UserDataForAuthType = {
   __typename?: 'UserDataForAuthType';
@@ -83,13 +89,6 @@ export type UserDataForAuthType = {
   /** Email */
   email?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-};
-
-/** Данные пользователя после регистрации */
-export type UserDataForRegistration = {
-  __typename?: 'UserDataForRegistration';
-  token?: Maybe<Token>;
-  user?: Maybe<UserDataForAuthType>;
 };
 
 /** Ответ после запроса восстановления пароля пользователя */

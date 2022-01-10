@@ -6,8 +6,8 @@ import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
 import { AuthorizationLocalRepository } from '@/modules/auth/repositories/login/AuthorizationLocalRepository'
 import { VuexTokenRepository } from '@/modules/auth/repositories/token/VuexTokenRepository'
 import { AUTH_TYPES } from '@/modules/auth/inject/types'
-import { LoginUnauthorizedException } from "@/modules/auth/exeptions/login/LoginUnauthorizedException";
-import { ExceptionAggregate } from "@/modules/exception/aggregates/ExceptionAggregate";
+import { LoginUnauthorizedException } from '@/modules/auth/exeptions/login/LoginUnauthorizedException'
+import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
 
 @injectable()
 export class AuthorizationService {
@@ -30,9 +30,9 @@ export class AuthorizationService {
    *
    * @param authorizationValue данные для авторизации пользователя
    */
-  public async auth (authorizationValue: AuthorizationValue): Promise<ITokenAuth> {
+  public async auth (authorizationValue: AuthorizationValue): Promise<ITokenAuth | null> {
     const tokenAuth = await this.authorizationAction.authSend(authorizationValue).then((r) => {
-      return r
+      return r !== null ? r.token : null
     })
 
     if (tokenAuth === null) {
@@ -72,7 +72,7 @@ export class AuthorizationService {
 
   /**
    * проверить того что нужно удалить в хранилище
-   * (Страница была перегружена, не отмечен "запомни меня" при авторизации, в хранилище нет токена)
+   * (Страница быть перегружена, не отмечен "запомни меня" при авторизации, в хранилище нет токена)
    *
    * @param isLoadPage флаг того что страница была загружена
    * @param isRemember флаг того что стоит отметка "запомни меня"
