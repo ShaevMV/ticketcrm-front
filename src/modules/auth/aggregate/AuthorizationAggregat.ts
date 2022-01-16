@@ -79,7 +79,15 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
 
       return token.user
     }
+
     return null
+  }
+
+  /**
+   * Отпра
+   */
+  public static logAuth (): void {
+    authorizationService.signLogout()
   }
 
   /**

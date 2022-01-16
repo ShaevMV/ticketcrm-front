@@ -2,4 +2,5 @@ import { AuthorizationValue } from '@/modules/auth/values/login/AuthorizationVal
 
 export interface IAuthorizationAction<T> {
   authSend(value: AuthorizationValue): Promise<T>
+  submitLogout(): Promise<null>
 }

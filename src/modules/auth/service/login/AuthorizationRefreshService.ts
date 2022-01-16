@@ -19,14 +19,14 @@ export class AuthorizationRefreshService {
   }
 
   public async getToken (): Promise<ITokenAuth | null> {
-    const tokenAuth = this.authorizationLocalRepository.getToken()
+    /* const tokenAuth =
     if (tokenAuth !== null && AuthorizationRefreshService.isNeedRefresh(tokenAuth)) {
       return await this.refreshToken(tokenAuth)
-    }
-    return tokenAuth
+    } */
+    return this.authorizationLocalRepository.getToken()
   }
 
-  private async refreshToken (token: ITokenAuth): Promise<ITokenAuth> {
+  /* private async refreshToken (token: ITokenAuth): Promise<ITokenAuth> {
     return await this.authorizationAction.refresh(token).then(r => {
       return r
     })
@@ -34,5 +34,5 @@ export class AuthorizationRefreshService {
 
   private static isNeedRefresh (token: ITokenAuth): boolean {
     return token.expiresIn <= Date.now()
-  }
+  } */
 }

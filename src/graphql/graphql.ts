@@ -1,3 +1,4 @@
+import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
@@ -15,6 +16,8 @@ export type Mutation = {
   __typename?: 'Mutation';
   /** Авторизация пользователя */
   auth?: Maybe<UserData>;
+  /** Выход пользователя из системы */
+  logout?: Maybe<Scalars['Boolean']>;
   /** Регистрация нового пользователя */
   registration?: Maybe<UserData>;
   /** Перезапрос токина */

@@ -8,8 +8,8 @@ import { IAuthorizationAction } from '@/modules/auth/actions/login/IAuthorizatio
 import { LoginUnauthorizedException } from '@/modules/auth/exeptions/login/LoginUnauthorizedException'
 import { TokenAuthMapper } from '@/modules/auth/mappers/TokenAuthMapper'
 import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
-import { IUserData } from "@/modules/profile/entitys/UserDataEntity";
-import { ProfileDataMapper } from "@/modules/profile/mappers/ProfileDataMapper";
+import { IUserData } from '@/modules/profile/entitys/UserDataEntity'
+import { ProfileDataMapper } from '@/modules/profile/mappers/ProfileDataMapper'
 
 @injectable()
 export class AuthorizationActionGraphql implements IAuthorizationAction<{ user: IUserData; token: ITokenAuth } | null> {
@@ -55,6 +55,24 @@ export class AuthorizationActionGraphql implements IAuthorizationAction<{ user: 
             }
           })
       })
+    })
+  }
+
+  submitLogout (): Promise<null> {
+    const MUTATION = `
+      mutation Logout(){
+          logout() {
+          }
+      }
+    `
+    console.log(123)
+
+    this.actionClient.getClient().then(r => {
+      r.mutation(MUTATION)
+    })
+    console.log(213)
+    return new Promise<null>((resolve) => {
+      resolve(null)
     })
   }
 }

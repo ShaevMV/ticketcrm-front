@@ -89,4 +89,14 @@ export class AuthorizationService {
   public isAuth (): boolean {
     return this.vuexTokenRepository.isAuth()
   }
+
+  /**
+   * Отправить запрос на выход пользователя из системы
+   */
+  public signLogout (): void {
+    this.authorizationAction.submitLogout().then(() => {
+      this.localTokenRepository.clearToken()
+      window.location.reload()
+    })
+  }
 }
