@@ -26,7 +26,7 @@ const recoveryPasswordService = domainContainer.get<RecoveryPasswordService>(AUT
 
 @injectable()
 export class Authorization extends AggregateRoot<AuthTokenEntity> {
-  private constructor (props: AuthTokenEntity) {
+  public constructor (props: AuthTokenEntity) {
     super(props, props.id)
   }
 
@@ -115,5 +115,9 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
     }
 
     return recoveryPasswordService.sendPasswordReset(passwordResetValue.getResult())
+  }
+
+  public isAuth (): boolean {
+    return authorizationService.isAuth()
   }
 }

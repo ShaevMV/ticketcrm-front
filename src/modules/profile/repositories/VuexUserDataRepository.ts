@@ -3,7 +3,7 @@ import 'reflect-metadata'
 import { DOMAIN_TYPES } from '@/domain/inject/types'
 import { VuexStorage } from '@/domain/story/VuexStorage'
 import { IUserData } from '@/modules/profile/entitys/UserDataEntity'
-import { ProfileActionsTypes, ProfileModuleTypes } from '@/store/modules/profile/types'
+import { ProfileActionsTypes, ProfileGettersTypes, ProfileModuleTypes } from '@/store/modules/profile/types'
 
 @injectable()
 export class VuexUserDataRepository {
@@ -24,6 +24,13 @@ export class VuexUserDataRepository {
       [ProfileModuleTypes.PROFILE_MODULE].toString(),
       [ProfileActionsTypes.SET_USER_DATA].toString(),
       userData
+    )
+  }
+
+  public findUserData (): IUserData | null {
+    return this.storage.getValue<IUserData>(
+      [ProfileModuleTypes.PROFILE_MODULE].toString(),
+      [ProfileGettersTypes.GET_USER_DATA].toString()
     )
   }
 }

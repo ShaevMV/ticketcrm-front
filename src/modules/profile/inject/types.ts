@@ -8,7 +8,8 @@ const PROFILE_TYPES = {
   ProfileService: Symbol.for('ProfileService'),
   Profile: Symbol.for('Profile'),
   RegistrationActionGraphql: Symbol.for('RegistrationActionGraphql'),
-  VuexUserDataRepository: Symbol.for('VuexUserDataRepository')
+  VuexUserDataRepository: Symbol.for('VuexUserDataRepository'),
+  ProfileAction: Symbol.for('ProfileAction')
 }
 
 export { PROFILE_TYPES }

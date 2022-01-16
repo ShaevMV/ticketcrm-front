@@ -1,7 +1,5 @@
-import { inject, injectable } from 'inversify'
+import { injectable } from 'inversify'
 import 'reflect-metadata'
-import { DOMAIN_TYPES } from '@/domain/inject/types'
-import { ApolloGraphql } from '@/domain/apiClient/ApolloGraphql'
 import { IRegistrationAction } from '@/modules/profile/actions/IRegistrationAction'
 import { IUserData } from '@/modules/profile/entitys/UserDataEntity'
 import { ITokenAuth } from '@/modules/auth/entitys/AuthTokenEntity'
@@ -10,17 +8,10 @@ import { TokenAuthMapper } from '@/modules/auth/mappers/TokenAuthMapper'
 import { ProfileDataMapper } from '@/modules/profile/mappers/ProfileDataMapper'
 import { ExceptionResponseMapper } from '@/modules/exception/mappers/ExceptionResponseMapper'
 import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
+import { ActionGraphql } from '@/modules/shared/actions/ActionGraphql'
 
 @injectable()
-export class RegistrationActionGraphql implements IRegistrationAction<null | { user: IUserData, token: ITokenAuth }> {
-  private actionClient: ApolloGraphql
-
-  public constructor (
-    @inject(DOMAIN_TYPES.ApiClient) actionClient: ApolloGraphql
-  ) {
-    this.actionClient = actionClient
-  }
-
+export class RegistrationActionGraphql extends ActionGraphql implements IRegistrationAction<null | { user: IUserData, token: ITokenAuth }> {
   registrationUser (value: RegistrationDataValue): Promise<{ user: IUserData; token: ITokenAuth } | null> {
     const MUTATION = `
       mutation Registration($email: String!, $password: String!, $password_confirmation: String!, $name: String!){

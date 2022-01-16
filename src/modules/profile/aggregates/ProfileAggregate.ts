@@ -38,4 +38,10 @@ export class Profile extends AggregateRoot<UserDataEntity> {
   public static setProfile (data: IUserData): void {
     profileService.setUserData(data)
   }
+
+  /*   public static async create (): Promise<void> {
+     if (profileService.findUserData() === null) {
+        let userData = profileService.requestUserData()
+      }
+  } */
 }

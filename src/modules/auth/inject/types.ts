@@ -10,6 +10,7 @@ import { RecoveryPasswordActionGraphql } from '@/modules/auth/actions/recoveryPa
 
 const AUTH_TYPES = {
   AuthorizationActionGraphql: Symbol.for('AuthorizationActionGraphql'),
+  AuthApplication: Symbol.for('AuthApplication'),
   RefreshActionGraphql: Symbol.for('RefreshActionGraphql'),
   RecoveryPasswordActionGraphql: Symbol.for('RecoveryPasswordActionGraphql'),
 

@@ -58,13 +58,7 @@ export type MutationPasswordResetArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  users?: Maybe<Array<Maybe<UserDataForAuthType>>>;
-};
-
-
-export type QueryUsersArgs = {
-  id?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
+  users?: Maybe<UserDataForAuthType>;
 };
 
 /** Токен для авторизации */

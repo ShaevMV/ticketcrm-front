@@ -65,13 +65,15 @@ import 'reflect-metadata'
 import { Options, Vue } from 'vue-class-component'
 import { MutationAuthArgs } from '@/graphql/graphql'
 import { AuthorizationValue } from '@/modules/auth/values/login/AuthorizationValue'
-import { Authorization } from '@/modules/auth/aggregate/AuthorizationAggregat'
 import { mapGetters } from 'vuex'
 import { ExceptionGettersTypes, ExceptionModuleTypes } from '@/store/modules/exception/types'
 import { ExceptionAggregate } from '@/modules/exception/aggregates/ExceptionAggregate'
 import { LOGIN_UNAUTHORIZED_COMPONENT } from '@/modules/auth/exeptions/login/LoginUnauthorizedException'
-import { Profile } from '@/modules/profile/aggregates/ProfileAggregate'
+import { domainContainer } from '@/domain/inject/domainInversify.config'
+import { AUTH_TYPES } from '@/modules/auth/inject/types'
+import { AuthApplication } from '@/modules/auth/application/AuthApplication'
 
+const authApplication = domainContainer.get<AuthApplication>(AUTH_TYPES.AuthApplication)
 @Options({
   name: 'LoginForm',
   computed: mapGetters([ExceptionModuleTypes.EXCEPTION_MODULE].toString(), {
@@ -94,12 +96,7 @@ export default class LoginForm extends Vue {
       password: this.password ?? '',
       isRememberMe: this.isRememberMe
     }
-
-    Authorization.auth(AuthorizationValue.create(IValue)).then(userData => {
-      if (userData !== null) {
-        Profile.setProfile(userData)
-      }
-    })
+    authApplication.login(AuthorizationValue.create(IValue).getResult())
   }
 
   doRegistration (): void {

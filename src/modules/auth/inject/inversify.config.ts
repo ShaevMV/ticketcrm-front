@@ -8,15 +8,16 @@ import { AuthorizationRefreshService } from '@/modules/auth/service/login/Author
 import { RefreshActionGraphql } from '@/modules/auth/actions/login/RefreshActionGraphql'
 import { RecoveryPasswordService } from '@/modules/auth/service/recoveryPassword/RecoveryPasswordService'
 import { RecoveryPasswordActionGraphql } from '@/modules/auth/actions/recoveryPassword/RecoveryPasswordActionGraphql'
+import { AuthApplication } from '@/modules/auth/application/AuthApplication'
 
 domainContainer.bind(AUTH_TYPES.AuthorizationActionGraphql).to(AuthorizationActionGraphql)
 domainContainer.bind(AUTH_TYPES.RefreshActionGraphql).to(RefreshActionGraphql)
 domainContainer.bind(AUTH_TYPES.RecoveryPasswordActionGraphql).to(RecoveryPasswordActionGraphql)
+domainContainer.bind(AUTH_TYPES.AuthApplication).to(AuthApplication)
 
 domainContainer.bind(AUTH_TYPES.AuthorizationService).to(AuthorizationService)
 domainContainer.bind(AUTH_TYPES.AuthorizationRefreshService).to(AuthorizationRefreshService)
 domainContainer.bind(AUTH_TYPES.RecoveryPasswordService).to(RecoveryPasswordService)
-
 
 domainContainer.bind(AUTH_TYPES.AuthorizationLocalRepository).to(AuthorizationLocalRepository)
 domainContainer.bind(AUTH_TYPES.VuexTokenRepository).to(VuexTokenRepository)
