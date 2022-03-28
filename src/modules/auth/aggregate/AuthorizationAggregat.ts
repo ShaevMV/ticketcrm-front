@@ -25,29 +25,35 @@ const authorizationService = domainContainer.get<AuthorizationService>(AUTH_TYPE
 const recoveryPasswordService = domainContainer.get<RecoveryPasswordService>(AUTH_TYPES.RecoveryPasswordService)
 
 @injectable()
-export class Authorization extends AggregateRoot<AuthTokenEntity> {
-  public constructor (props: AuthTokenEntity) {
-    super(props, props.id)
+export class Authorization extends AggregateRoot<AuthTokenEntity | null> {
+  public constructor (props: AuthTokenEntity | null) {
+    const id = props !== null ? props.id : undefined
+    super(props, id)
+  }
+
+  public isAuth (): boolean {
+    return this.props !== null
   }
 
   /**
    * Создать агрегат авторизация
    * @param isLoadPage загрузка странице (для реализации isRememberMe)
    */
-  public static create (isLoadPage = true): Result<Authorization> {
+  public static create (isLoadPage = true): Authorization {
     const tokenAuth = authorizationService.findToken()
 
     if (tokenAuth === null ||
       authorizationService.isClearToken(isLoadPage, tokenAuth?.isRemember ?? false)) {
       authorizationService.clearToken()
-      return Result.fail<Authorization>('Пользователь не авторизован')
+
+      return new Authorization(null)
     }
 
     if (!authorizationService.isAuth()) {
       authorizationService.setVuexToken(tokenAuth)
     }
 
-    return Result.ok<Authorization>(new Authorization(AuthTokenEntity.create(tokenAuth).getResult()))
+    return new Authorization(AuthTokenEntity.create(tokenAuth).getResult())
   }
 
   /**
@@ -115,9 +121,5 @@ export class Authorization extends AggregateRoot<AuthTokenEntity> {
     }
 
     return recoveryPasswordService.sendPasswordReset(passwordResetValue.getResult())
-  }
-
-  public isAuth (): boolean {
-    return authorizationService.isAuth()
   }
 }

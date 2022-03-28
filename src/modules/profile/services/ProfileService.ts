@@ -3,7 +3,7 @@ import { inject, injectable } from 'inversify'
 import { PROFILE_TYPES } from '@/modules/profile/inject/types'
 import { VuexUserDataRepository } from '@/modules/profile/repositories/VuexUserDataRepository'
 import { IUserData } from '@/modules/profile/entitys/UserDataEntity'
-import { ProfileAction } from "@/modules/profile/actions/ProfileAction";
+import { ProfileAction } from '@/modules/profile/actions/ProfileAction'
 
 @injectable()
 export class ProfileService {
@@ -14,7 +14,7 @@ export class ProfileService {
     @inject(PROFILE_TYPES.VuexUserDataRepository) vuexUserDataRepository: VuexUserDataRepository,
     @inject(PROFILE_TYPES.ProfileAction) profileAction: ProfileAction
   ) {
-    this.profileAction = profileAction;
+    this.profileAction = profileAction
     this.vuexUserDataRepository = vuexUserDataRepository
   }
 

@@ -19,7 +19,11 @@ import { mapGetters } from 'vuex'
 import { ProfileGettersTypes, ProfileModuleTypes } from '@/store/modules/profile/types'
 import { IUserData } from '@/modules/profile/entitys/UserDataEntity'
 import { Authorization } from '@/modules/auth/aggregate/AuthorizationAggregat'
+import { AUTH_TYPES } from '@/modules/auth/inject/types'
+import { AuthApplication } from '@/modules/auth/application/AuthApplication'
+import { domainContainer } from '@/domain/inject/domainInversify.config'
 
+const authApplication = domainContainer.get<AuthApplication>(AUTH_TYPES.AuthApplication)
 @Options({
   name: 'user-navbar',
   computed: mapGetters([ProfileModuleTypes.PROFILE_MODULE].toString(), {
@@ -46,7 +50,7 @@ export default class UserNavbar extends Vue {
    * В
    */
   logout (): void {
-    Authorization.logAuth()
+    // Authorization.logAuth()
   }
 
   /**

@@ -16,9 +16,22 @@ const registrationService = domainContainer.get<RegistrationService>(PROFILE_TYP
 const profileService = domainContainer.get<ProfileService>(PROFILE_TYPES.ProfileService)
 
 @injectable()
-export class Profile extends AggregateRoot<UserDataEntity> {
-  private constructor (props: UserDataEntity) {
-    super(props, props.id)
+export class Profile extends AggregateRoot<UserDataEntity | null> {
+  public constructor (
+    props: UserDataEntity | null
+  ) {
+    const id = props !== null ? props.id : undefined
+    super(props, id)
+  }
+
+  public static create (): Profile {
+    const userData = profileService.findUserData()
+    let userDataEntity: UserDataEntity | null = null
+    if (userData !== null) {
+      userDataEntity = UserDataEntity.create(userData).getResult()
+    }
+
+    return new Profile(userDataEntity)
   }
 
   /**
